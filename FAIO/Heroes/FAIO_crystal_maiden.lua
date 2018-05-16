@@ -74,7 +74,7 @@ function FAIO_crystal_maiden.comboExecute(myHero, enemy, myMana)
 		end
 	end
 
-	FAIO_crystal_maiden.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+	FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 	return
 
 end
@@ -97,7 +97,7 @@ function FAIO_crystal_maiden.executeUltCombo(myHero, myMana, enemy, ult, glimmer
 				FAIO_skillHandler.executeSkillOrder(ult)
 				return
 			else
-				FAIO_crystal_maiden.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+				FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 				return
 			end
 		else
@@ -131,7 +131,7 @@ function FAIO_crystal_maiden.executeUltCombo(myHero, myMana, enemy, ult, glimmer
 				FAIO_skillHandler.executeSkillOrder(ult)
 				return
 			else
-				FAIO_crystal_maiden.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+				FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 				return
 			end
 		end

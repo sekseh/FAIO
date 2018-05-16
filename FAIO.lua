@@ -1,3 +1,5 @@
+-- CHECK ORBWALKER FOR.. FORGOT THE NAME.. THIS DOUBLE ATTACK ITEM THINGY
+
 --[[
 ##################################################################
 FAIO - foos All-In-One script package for hake.me
@@ -13,34 +15,73 @@ local FAIO = {}
 
 Log.Write("FAIO - loaded Version: alpha.00.00.001a")
 
-FAIO.system = require("FAIO/Core/FAIO_system")
+FAIO.system = nil
 
-local FAIO_data = require("FAIO/Core/FAIO_data")
+local FAIO_data = {}
+local FAIO_options = {}
+local FAIO_skillHandler = {}
+local FAIO_utility_functions = {}	
+local FAIO_dodgeIT = {}
+local FAIO_lastHitter = {}
+local FAIO_itemHandler = {}
+local FAIO_killsteal = {}
+local FAIO_creepControl = {}
+local FAIO_orbwalker = {}
+local FAIO_attackHandler = {}
+local FAIO_ward = {}
 
-local FAIO_options = require("FAIO/Core/FAIO_options")
+function FAIO.requireBasicInit()
 
-local FAIO_skillHandler = require("FAIO/Core/FAIO_skillHandler")
-	setmetatable(FAIO_skillHandler, {__index = FAIO})
+	FAIO.system = require("FAIO/Core/FAIO_system")
 
-local FAIO_utility_functions = require("FAIO/Utility/FAIO_utility_functions")
-	setmetatable(FAIO_utility_functions, {__index = FAIO})
+	FAIO_data = require("FAIO/Core/FAIO_data")
+
+	FAIO_options = require("FAIO/Core/FAIO_options")
+
+end
+
+FAIO.requireBasicInit()
+
+function FAIO.requireDynamicInit()
+
+	FAIO.system = require("FAIO/Core/FAIO_system")
+
+	FAIO_data = require("FAIO/Core/FAIO_data")
+
+	FAIO_options = require("FAIO/Core/FAIO_options")
+
+	FAIO_skillHandler = require("FAIO/Core/FAIO_skillHandler")
+		setmetatable(FAIO_skillHandler, {__index = FAIO})
+
+	FAIO_utility_functions = require("FAIO/Utility/FAIO_utility_functions")
+		setmetatable(FAIO_utility_functions, {__index = FAIO})
 	
-local FAIO_dodgeIT = require("FAIO/Utility/FAIO_dodgeIT")
-	setmetatable(FAIO_dodgeIT, {__index = FAIO})
+	FAIO_dodgeIT = require("FAIO/Utility/FAIO_dodgeIT")
+		setmetatable(FAIO_dodgeIT, {__index = FAIO})
 
-local FAIO_lastHitter = require("FAIO/Utility/FAIO_lastHitter")
-	setmetatable(FAIO_lastHitter, {__index = FAIO})
+	FAIO_lastHitter = require("FAIO/Utility/FAIO_lastHitter")
+		setmetatable(FAIO_lastHitter, {__index = FAIO})
 
-local FAIO_itemHandler = require("FAIO/Utility/FAIO_itemHandler")
-	setmetatable(FAIO_itemHandler, {__index = FAIO})
+	FAIO_itemHandler = require("FAIO/Utility/FAIO_itemHandler")
+		setmetatable(FAIO_itemHandler, {__index = FAIO})
 
-local FAIO_killsteal = require("FAIO/Utility/FAIO_killsteal")
-	setmetatable(FAIO_killsteal, {__index = FAIO})
+	FAIO_killsteal = require("FAIO/Utility/FAIO_killsteal")
+		setmetatable(FAIO_killsteal, {__index = FAIO})
 
-local FAIO_ward = require("FAIO/Utility/FAIO_ward")
+	FAIO_creepControl = require("FAIO/Core/FAIO_creepControl")
+		setmetatable(FAIO_creepControl, {__index = FAIO})
 
-local FAIO_creepControl = require("FAIO/Core/FAIO_creepControl")
-	setmetatable(FAIO_creepControl, {__index = FAIO})
+	FAIO_orbwalker = require("FAIO/Core/FAIO_orbwalker")
+		setmetatable(FAIO_orbwalker, {__index = FAIO})
+
+	FAIO_attackHandler = require("FAIO/Core/FAIO_attackHandler")
+		setmetatable(FAIO_attackHandler, {__index = FAIO})
+
+	FAIO_ward = require("FAIO/Utility/FAIO_ward")
+
+end
+
+FAIO.requireDynamicInit()
 
 local FAIO_heroScript = {}
 
@@ -71,8 +112,10 @@ FAIO.arcWardenfont = Renderer.LoadFont("Arial", 18, Enum.FontWeight.EXTRABOLD)
 FAIO.heroIconPath = "resource/flash3/images/heroes/"
 FAIO.itemIconPath = "resource/flash3/images/items/"
 
-FAIO.reloaded = true
+
 FAIO.myHero = nil
+
+
 
 
 
@@ -128,11 +171,8 @@ FAIO.invokerDisplayNeedsInit = true
 FAIO.invokerPanelNeedsInit = true
 FAIO.InvokerCanComboStart = false
 FAIO.getInvokerSettings = nil
-FAIO.AttackProjectileCreate = 0
-FAIO.AttackAnimationCreate = 0
-FAIO.AttackParticleCreate = 0
-FAIO.InAttackBackswing = false
-FAIO.OrbwalkerDelay = 0
+
+
 FAIO.TPParticleIndex = nil
 FAIO.TPParticleTime = 0
 FAIO.TPParticleUnit = nil
@@ -214,7 +254,6 @@ FAIO.ShrinePositionTable = {}
 
 function FAIO.ResetGlobalVariables()
 
-	FAIO.reloaded = true
 	FAIO.myHero = nil
 	FAIO.LockedTarget = nil
 	FAIO.myUnitName = nil
@@ -266,11 +305,8 @@ function FAIO.ResetGlobalVariables()
 	FAIO.invokerDisplayNeedsInit = true
 	FAIO.getInvokerSettings = nil
 	FAIO.InvokerCanComboStart = false
-	FAIO.AttackProjectileCreate = 0
-	FAIO.AttackAnimationCreate = 0
-	FAIO.AttackParticleCreate = 0
-	FAIO.InAttackBackswing = false
-	FAIO.OrbwalkerDelay = 0
+
+
 	FAIO.TPParticleIndex = nil
 	FAIO.TPParticleTime = 0
 	FAIO.TPParticleUnit = nil
@@ -346,29 +382,66 @@ end
 
 function FAIO.resetModules()
 
+	Log.Write("*****-----     FAIO RESET     -----*****")
+
 	for i, v in pairs(package.loaded) do
 		if string.find(i, "FAIO/") ~= nil then
 			package.loaded[i] = nil
+			Log.Write("reset" .. "  -  " .. i)
 		end
-		package.loaded["Menu"] = nil
 	end
+
+	Log.Write("*****-----     DONE     -----*****")
+
+end
+
+function FAIO.resetDynamicModules()
+
+	Log.Write("*****-----     FAIO DYNAMIC RESET     -----*****")
+
+	for i, v in pairs(package.loaded) do
+		if string.find(i, "FAIO/") ~= nil then
+			if i ~= "FAIO/Core/FAIO_system" and i ~= "FAIO/Core/FAIO_data" and i ~= "FAIO/Core/FAIO_options" then
+				package.loaded[i] = nil
+				Log.Write("reset" .. "  -  " .. i)
+			end
+		end
+	end
+
+	FAIO_skillHandler = {}
+	FAIO_utility_functions = {}	
+	FAIO_dodgeIT = {}
+	FAIO_lastHitter = {}
+	FAIO_itemHandler = {}
+	FAIO_killsteal = {}
+	FAIO_creepControl = {}
+	FAIO_orbwalker = {}
+	FAIO_ward = {}
 
 	FAIO_heroScript = {}
 
-	FAIO.reloaded = false
+	FAIO.requireDynamicInit()
+
+	Log.Write("*****-----     DONE     -----*****")
 
 end
 
 function FAIO.OnGameStart()
 	
+	FAIO.resetDynamicModules()
 	FAIO.ResetGlobalVariables()
-	FAIO.resetModules()
 
 end
 
 function FAIO.OnGameEnd()
 	
+	FAIO.resetDynamicModules()
 	FAIO.ResetGlobalVariables()
+
+end
+
+function FAIO.OnScriptUnload()
+
 	FAIO.resetModules()
 
 end
@@ -376,19 +449,8 @@ end
 -- main callback
 function FAIO.OnUpdate()
 
-	if FAIO.reloaded then
-		FAIO.resetModules()
-	end
-
 	if not Menu.IsEnabled(FAIO_options.optionEnable) then return end
 
-	if not Engine.IsInGame() then
-		if FAIO_myHero ~= nil then
-			FAIO.ResetGlobalVariables()
-			FAIO.resetModules()
-		end
-	end
-	
 	if GameRules.GetGameState() < 4 then return end
 	if GameRules.GetGameState() > 5 then return end
 
@@ -464,7 +526,8 @@ function FAIO.OnUpdate()
 	end
 
 	FAIO_itemHandler.init()
-	
+	FAIO_orbwalker.orbwalkerResetter()
+	FAIO_attackHandler.resetter()
 
 	local isHeroSupported = FAIO.heroSupported(myHero)
 
@@ -584,7 +647,7 @@ function FAIO.OnUpdate()
 			end
 		else
 			if Menu.IsKeyDown(FAIO_options.optionComboKey) and Entity.IsAlive(comboTarget) then	
-				FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", comboTarget, nil)	
+				FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", comboTarget, nil)	
 				FAIO_itemHandler.itemUsage(myHero, comboTarget)
 			end
 		end
@@ -599,7 +662,7 @@ function FAIO.OnUpdate()
 	else	
 		if comboTarget then
 			if Menu.IsKeyDown(FAIO_options.optionComboKey) and Entity.IsAlive(comboTarget) then	
-				FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", comboTarget, nil)	
+				FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", comboTarget, nil)	
 				FAIO_itemHandler.itemUsage(myHero, comboTarget)
 			end
 		end
@@ -689,7 +752,6 @@ function FAIO.OnUpdate()
 --	end
 
 	FAIO_lastHitter.lastHitter(myHero)
-	FAIO.GetControllableEntities(myHero)
 	FAIO.GenericJungleTracker(myHero)
 
 	if Menu.IsEnabled(FAIO_options.optionDodgeItEnable) then	
@@ -738,7 +800,7 @@ function FAIO.OnUpdate()
 	if FAIO.LockedTarget == nil then
 		if Menu.IsEnabled(FAIO_options.optionMoveToCursor) then
 			if Menu.IsKeyDown(FAIO_options.optionComboKey) then
-				FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, Input.GetWorldCursorPos())
+				FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, Input.GetWorldCursorPos())
 				return
 			end
 		end	
@@ -971,12 +1033,22 @@ function FAIO.OnUnitAnimation(animation)
 
 	if Heroes.GetLocal() ~= animation.unit then return end
 
-	if animation.type == 1 then
-		FAIO.AttackAnimationCreate = os.clock()
-		FAIO.AttackParticleCreate = os.clock() + animation.castpoint
-	end
+	FAIO_orbwalker.OnUnitAnimation(animation)
 
 end
+
+--function FAIO.OnUnitAnimationEnd(animation)
+--
+--	if not animation then return end
+--	if not Heroes.GetLocal() then return end
+--
+--	if not animation.unit then return end
+--
+--	if animation.unit ~= Heroes.GetLocal() then return end
+--
+--	Log.Write(tostring(snap))
+--
+--end
 
 function FAIO.OnProjectile(projectile)
 
@@ -984,8 +1056,6 @@ function FAIO.OnProjectile(projectile)
 
 	local myHero = Heroes.GetLocal()
 		if not myHero then return end
-
-	
 
 	FAIO_lastHitter.OnProjectile(projectile)
 	FAIO_itemHandler.OnProjectile(projectile)
@@ -1012,9 +1082,8 @@ function FAIO.OnProjectile(projectile)
 	end
 
 	if projectile.source ~= Heroes.GetLocal() then return end
-	if not projectile.isAttack then return end
-
-	FAIO.AttackProjectileCreate = os.clock()
+	
+	FAIO_orbwalker.OnProjectile(projectile)
 
 end
 
@@ -1390,11 +1459,11 @@ function FAIO.OnMenuOptionChange(option, old, new)
 
     	FAIO_itemHandler.OnMenuOptionChange(option, old, new)
 
-	if option == FAIO.invokerDisplaySizeOption then
+	if option == FAIO_options.invokerDisplaySizeOption then
         	FAIO.invokerDisplayInit()
     	end
 
-	if option == FAIO.invokerPanelSizeOption then
+	if option == FAIO_options.invokerPanelSizeOption then
 		FAIO.invokerPanelInit()
     	end
 
@@ -1461,622 +1530,6 @@ function FAIO.targetChecker(genericEnemyEntity)
 
 	return genericEnemyEntity
 	end	
-end
-
-function FAIO.GetControllableEntities(myHero)
-
-	if not myHero then return end
-
-	for i = 1, NPCs.Count() do 
-		local npc = NPCs.Get(i)
-		if Entity.IsNPC(npc) and Entity.IsAlive(npc) and Entity.IsSameTeam(myHero, npc) then
-			if npc ~= myHero then
-				if Entity.GetOwner(npc) == Entity.GetOwner(myHero) or Entity.OwnedBy(myHero, npc) or Entity.OwnedBy(npc, myHero) then
-					if npc ~= nil then
-						if FAIO.ControllableEntityTable[Entity.GetIndex(npc)] == nil then
-							FAIO.ControllableEntityTable[Entity.GetIndex(npc)] = npc
-						end
-					end
-				else
-					if FAIO.ControllableEntityTable[Entity.GetIndex(npc)] ~= nil then
-						FAIO.ControllableEntityTable[Entity.GetIndex(npc)] = nil
-					end
-				end	
-			else
-				if FAIO.ControllableEntityTable[Entity.GetIndex(npc)] ~= nil then
-					FAIO.ControllableEntityTable[Entity.GetIndex(npc)] = nil
-				end
-			end		
-		else
-			if FAIO.ControllableEntityTable[Entity.GetIndex(npc)] ~= nil then
-				FAIO.ControllableEntityTable[Entity.GetIndex(npc)] = nil
-			end
-		end	
-	end
-
-	return
-
-end
-
-function FAIO.GetNecronomiconEntityTable(myHero, caster)
-
-	if not myHero then return end
-	if not caster then return end
-
-	local necronomiconTable = {}
-	for i, npc in ipairs(NPC.GetUnitsInRadius(myHero, 99999, Enum.TeamType.TEAM_FRIEND)) do
-    		if Entity.IsSameTeam(myHero, npc) and Entity.GetOwner(npc) == caster then
-    			if NPC.GetUnitName(npc) ~= nil then
-				if NPC.GetUnitName(npc) == string.match(NPC.GetUnitName(npc) , 'npc_dota_necronomicon_archer_.') or NPC.GetUnitName(npc) == string.match(NPC.GetUnitName(npc) , 'npc_dota_necronomicon_warrior_.') then
-					if npc ~= nil then
-						table.insert(necronomiconTable, npc)
-					end
-				end
-			end
-		end
-	end
-	
-	return necronomiconTable
-
-end
-
-function FAIO.GetIllusionEntityTable(myHero, caster)
-
-	if not myHero then return end
-	if not caster then return end
-
-	local controllableTable = {}
-	if next(controllableTable) == nil then
-		for i = 1, NPCs.Count() do 
-		local npc = NPCs.Get(i)
-			if Entity.IsSameTeam(myHero, npc) then
-				if npc ~= myHero then
-					if Entity.GetOwner(npc) == Entity.GetOwner(caster) then
-						if NPC.HasModifier(npc, "modifier_illusion") then
-							if npc ~= nil then
-								table.insert(controllableTable, npc)
-							else controllableTable = {}
-							break
-							end
-						end
-					end
-				end
-			end
-		end
-	end
-	
-	return controllableTable
-
-end
-
-function FAIO.NecronomiconController(necronomiconEntity, target, position)
-
-	if not necronomiconEntity then return end
-	if not target and not position then return end
-
-	if target ~= nil then
-		if NPC.GetUnitName(necronomiconEntity) == string.match(NPC.GetUnitName(necronomiconEntity) , 'npc_dota_necronomicon_archer_.') then
-			if not NPC.IsAttacking(necronomiconEntity) then
-				if (os.clock() - FAIO.lastCastTime) >= 0.5 then
-					if not NPC.IsEntityInRange(necronomiconEntity, target, 600) then
-						Player.PrepareUnitOrders(Players.GetLocal(), Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET, target, Vector(0,0,0), ability, Enum.PlayerOrderIssuer.DOTA_ORDER_ISSUER_PASSED_UNIT_ONLY, necronomiconEntity)
-						FAIO.lastCastTime = os.clock()
-						FAIO.Debugger(GameRules.GetGameTime(), necronomiconEntity, "attack", "DOTA_UNIT_ORDER_ATTACK_TARGET")
-					else			
-						if Ability.IsReady(NPC.GetAbilityByIndex(necronomiconEntity, 0)) then
-							if NPC.IsHero(target) then
-								Player.PrepareUnitOrders(Players.GetLocal(), Enum.UnitOrder.DOTA_UNIT_ORDER_CAST_TARGET, target, Vector(0,0,0), NPC.GetAbilityByIndex(necronomiconEntity, 0), Enum.PlayerOrderIssuer.DOTA_ORDER_ISSUER_PASSED_UNIT_ONLY, necronomiconEntity)
-								FAIO.lastCastTime = os.clock()
-								FAIO.Debugger(GameRules.GetGameTime(), necronomiconEntity, "manaBurn", "DOTA_UNIT_ORDER_CAST_TARGET")
-							end
-						end
-						if not Ability.IsReady(NPC.GetAbilityByIndex(necronomiconEntity, 0)) then
-							Player.PrepareUnitOrders(Players.GetLocal(), Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET, target, Vector(0,0,0), ability, Enum.PlayerOrderIssuer.DOTA_ORDER_ISSUER_PASSED_UNIT_ONLY, necronomiconEntity)
-							FAIO.lastCastTime = os.clock()
-							FAIO.Debugger(GameRules.GetGameTime(), necronomiconEntity, "attack", "DOTA_UNIT_ORDER_ATTACK_TARGET")
-						end	
-					end
-				end
-			end
-		end
-		if (os.clock() - FAIO.lastCastTime) >= 0.25 then
-			if NPC.GetUnitName(necronomiconEntity) == string.match(NPC.GetUnitName(necronomiconEntity) , 'npc_dota_necronomicon_warrior_.') then
-				if not NPC.IsAttacking(necronomiconEntity) then
-					if (os.clock() - FAIO.lastCastTime2) >= 0.5 then
-						Player.PrepareUnitOrders(Players.GetLocal(), Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET, target, Vector(0,0,0), ability, Enum.PlayerOrderIssuer.DOTA_ORDER_ISSUER_PASSED_UNIT_ONLY, necronomiconEntity)
-						FAIO.lastCastTime2 = os.clock()
-						FAIO.Debugger(GameRules.GetGameTime(), necronomiconEntity, "attack", "DOTA_UNIT_ORDER_ATTACK_TARGET")
-					end
-				end
-			end
-		end
-	end
-
-	if position ~= nil then
-		if NPC.GetUnitName(necronomiconEntity) == string.match(NPC.GetUnitName(necronomiconEntity) , 'npc_dota_necronomicon_archer_.') then
-			if not NPC.IsAttacking(necronomiconEntity) and not NPC.IsRunning(necronomiconEntity) then
-				if (os.clock() - FAIO.lastCastTime) >= 0.5 then
-					Player.PrepareUnitOrders(Players.GetLocal(), Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_MOVE, target, position, ability, Enum.PlayerOrderIssuer.DOTA_ORDER_ISSUER_PASSED_UNIT_ONLY, necronomiconEntity)
-					FAIO.lastCastTime = os.clock()
-					FAIO.Debugger(GameRules.GetGameTime(), necronomiconEntity, "attackMove", "DOTA_UNIT_ORDER_ATTACK_MOVE")
-				end
-			end
-		end
-		if NPC.GetUnitName(necronomiconEntity) == string.match(NPC.GetUnitName(necronomiconEntity) , 'npc_dota_necronomicon_warrior_.') then
-			if (os.clock() - FAIO.lastCastTime) >= 0.25 then
-				if not NPC.IsAttacking(necronomiconEntity) and not NPC.IsRunning(necronomiconEntity) then
-					if (os.clock() - FAIO.lastCastTime2) >= 0.5 then
-						Player.PrepareUnitOrders(Players.GetLocal(), Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_MOVE, target, position, ability, Enum.PlayerOrderIssuer.DOTA_ORDER_ISSUER_PASSED_UNIT_ONLY, necronomiconEntity)
-						FAIO.lastCastTime2 = os.clock()
-						FAIO.Debugger(GameRules.GetGameTime(), necronomiconEntity, "attackMove", "DOTA_UNIT_ORDER_ATTACK_MOVE")
-					end
-				end
-			end
-		end	
-	end
-
-end
-
-function FAIO.invokerForgedSpiritController(myHero, enemy)
-
-	if not myHero then return end
-	if not enemy then return end
-
-	for i = 1, NPCs.Count() do 
-	local npc = NPCs.Get(i)
-		if Entity.IsSameTeam(myHero, npc) then
-			if npc ~= myHero and Entity.OwnedBy(npc, myHero) then
-				if NPC.GetUnitName(npc) ~= nil then
-					if  NPC.GetUnitName(npc) == "npc_dota_invoker_forged_spirit" then
-						if npc ~= nil and Entity.IsAlive(npc) then
-							FAIO.GenericAttackIssuer2("Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil, npc)
-						end	
-					end
-				end
-			end
-		end
-	end
-
-end
-
-function FAIO.MantaIlluController(target, position, myHero, tempestDoubleEntity)
-
-	if not myHero then return end
-	if next(FAIO.GetIllusionEntityTable(myHero, tempestDoubleEntity)) == nil then return end
-	if not target and not position then return end
-	 
-	local mantaIllu1 = FAIO.GetIllusionEntityTable(myHero, tempestDoubleEntity)[1]
-	local mantaIllu2 = FAIO.GetIllusionEntityTable(myHero, tempestDoubleEntity)[2]
-
-	if target ~= nil then
-		if mantaIllu1 then
-			if os.clock() - FAIO.LastTickManta1 >= 0.5 then
-				Player.PrepareUnitOrders(Players.GetLocal(), Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET, target, Vector(0,0,0), ability, Enum.PlayerOrderIssuer.DOTA_ORDER_ISSUER_PASSED_UNIT_ONLY, mantaIllu1)
-				FAIO.LastTickManta1 = os.clock()
-				FAIO.Debugger(GameRules.GetGameTime(), mantaIllu1, "attack", "DOTA_UNIT_ORDER_ATTACK_TARGET")
-			end
-		end
-		if mantaIllu2 then
-			if os.clock() - FAIO.LastTickManta2 >= 0.5 then
-				Player.PrepareUnitOrders(Players.GetLocal(), Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET, target, Vector(0,0,0), ability, Enum.PlayerOrderIssuer.DOTA_ORDER_ISSUER_PASSED_UNIT_ONLY, mantaIllu2)
-				FAIO.LastTickManta2 = os.clock()
-				FAIO.Debugger(GameRules.GetGameTime(), mantaIllu2, "attack", "DOTA_UNIT_ORDER_ATTACK_TARGET")
-			end
-		end
-	end
-
-	if position ~= nil then
-		if mantaIllu1 then
-			if not NPC.IsAttacking(mantaIllu1) and not NPC.IsRunning(mantaIllu1) then
-				if os.clock() - FAIO.LastTickManta1 >= 0.5 then
-					Player.PrepareUnitOrders(Players.GetLocal(), Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_MOVE, target, position, ability, Enum.PlayerOrderIssuer.DOTA_ORDER_ISSUER_PASSED_UNIT_ONLY, mantaIllu1)
-					FAIO.LastTickManta1 = os.clock()
-					FAIO.Debugger(GameRules.GetGameTime(), mantaIllu1, "attackMove", "DOTA_UNIT_ORDER_ATTACK_MOVE")
-				end
-			end
-		end
-		if mantaIllu2 then
-			if not NPC.IsAttacking(mantaIllu2) and not NPC.IsRunning(mantaIllu2) then
-				if os.clock() - FAIO.LastTickManta2 >= 0.5 then
-					Player.PrepareUnitOrders(Players.GetLocal(), Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_MOVE, target, position, ability, Enum.PlayerOrderIssuer.DOTA_ORDER_ISSUER_PASSED_UNIT_ONLY, mantaIllu2)
-					FAIO.LastTickManta2 = os.clock()
-					FAIO.Debugger(GameRules.GetGameTime(), mantaIllu2, "attackMove", "DOTA_UNIT_ORDER_ATTACK_MOVE")
-				end
-			end
-		end
-	end	
-end
-
-function FAIO.GenericMainAttack(myHero, attackType, target, position)
-	
-	if not myHero then return end
-	if not target and not position then return end
-
-	if FAIO.isHeroChannelling(myHero) == true then return end
-	if FAIO.heroCanCastItems(myHero) == false then return end
-	if FAIO_utility_functions.inSkillAnimation(myHero) == true then return end
-
-	if Menu.IsEnabled(FAIO_options.optionOrbwalkEnable) then
-		if target ~= nil then
-			if NPC.HasModifier(myHero, "modifier_windrunner_focusfire") then
-				FAIO.GenericAttackIssuer(attackType, target, position, myHero)
-			elseif NPC.HasModifier(myHero, "modifier_item_hurricane_pike_range") then
-				FAIO.GenericAttackIssuer(attackType, target, position, myHero)
-			else
-				FAIO.OrbWalker(myHero, target)
-			end
-		else
-			FAIO.GenericAttackIssuer(attackType, target, position, myHero)
-		end
-	else
-		FAIO.GenericAttackIssuer(attackType, target, position, myHero)
-	end
-
-end
-
-function FAIO.GenericAttackIssuer(attackType, target, position, npc)
-
-	if not npc then return end
-	if not target and not position then return end
-	if os.clock() - FAIO.lastAttackTime2 < 0.75 then return end
-
-	if attackType == "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET" then
-		if target ~= nil then
-			if target ~= FAIO.LastTarget then
-				Player.PrepareUnitOrders(Players.GetLocal(), Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET, target, Vector(0, 0, 0), ability, Enum.PlayerOrderIssuer.DOTA_ORDER_ISSUER_PASSED_UNIT_ONLY, npc, false, true)
-				FAIO.LastTarget = target
-			end
-		end
-	end
-
-	if attackType == "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_MOVE" then
-		if position ~= nil then
-			if not NPC.IsAttacking(npc) or not NPC.IsRunning(npc) then
-				if position:__tostring() ~= FAIO.lastMovePos:__tostring() then
-					if (position - FAIO.lastMovePos):Length2D() > 100 then
-						Player.PrepareUnitOrders(Players.GetLocal(), Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_MOVE, target, position, ability, Enum.PlayerOrderIssuer.DOTA_ORDER_ISSUER_PASSED_UNIT_ONLY, npc)
-						FAIO.lastMovePos = position
-					end
-				end
-			end
-		end
-	end
-
-	if attackType == "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION" then
-		if position ~= nil then
-			if position:__tostring() ~= FAIO.lastMovePos:__tostring() then
-				if (position - FAIO.lastMovePos):Length2D() > 100 then
-					Player.PrepareUnitOrders(Players.GetLocal(), Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION, target, position, ability, Enum.PlayerOrderIssuer.DOTA_ORDER_ISSUER_PASSED_UNIT_ONLY, npc, false, true)
-					FAIO.lastMovePos = position
-				end
-			end
-		end
-	end
-
-	if target ~= nil then
-		if target == FAIO.LastTarget then
-			if not NPC.IsAttacking(npc) then
-				FAIO.LastTarget = nil
-				FAIO.lastAttackTime2 = os.clock()
-				return
-			end
-		end
-	end
-
-	if position ~= nil then
-		if position:__tostring() == FAIO.LastTarget then
-			if not NPC.IsRunning(npc) then
-				FAIO.lastMovePos = Vector()
-				FAIO.lastAttackTime2 = os.clock()
-				return
-			end
-		end
-	end
-
-end
-
-function FAIO.GenericAttackIssuer2(attackType, target, position, npc)
-
-	if not npc or (npc and not Entity.IsAlive(npc)) then return end
-	if not target and not position then return end
-
-	if FAIO[tostring(npc)] ~= nil then
-		if os.clock() - FAIO[tostring(npc)] < 1.0 then
-			return
-		end
-	end
-
-	if attackType == "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET" and (Menu.IsKeyDown(FAIO_options.optionComboKey) or Menu.IsKeyDown(FAIO_options.optionHeroVisageInstStunKey)) then
-		if target ~= nil then
-			Player.AttackTarget(Players.GetLocal(), npc, target, false)
-			FAIO.Debugger(GameRules.GetGameTime(), npc, "attack", "DOTA_UNIT_ORDER_ATTACK_TARGET")
-			FAIO[tostring(npc)] = os.clock()
-			return
-		end
-	end
-
-	if attackType == "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_MOVE" then
-		if position ~= nil then
-			if #NPC.GetUnitsInRadius(npc, NPC.GetAttackRange(npc)+50, 1) < 1 then
-				Player.PrepareUnitOrders(Players.GetLocal(), Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_MOVE, target, position, ability, Enum.PlayerOrderIssuer.DOTA_ORDER_ISSUER_PASSED_UNIT_ONLY, npc)
-				FAIO.Debugger(GameRules.GetGameTime(), npc, "attackMove", "DOTA_UNIT_ORDER_ATTACK_MOVE")
-				FAIO[tostring(npc)] = os.clock()
-				return
-			end
-		end
-	end
-
-	if attackType == "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION" then
-		if position ~= nil then
-			if not NPC.IsRunning(npc) then
-				NPC.MoveTo(npc, position, false, false)
-				FAIO.Debugger(GameRules.GetGameTime(), npc, "move", "DOTA_UNIT_ORDER_MOVE_TO_POSITION")
-				FAIO[tostring(npc)] = os.clock()
-				return
-			end
-		end
-	end
-end
-
-function FAIO.GenericControllableAttackIssuer(attackType, target, position)
-
-	if next(FAIO.ControllableEntityTable) == nil then return end
-	if not target and not position then return end
-
-	local controllableEntity = nil
-		for i, v in pairs(FAIO.ControllableEntityTable) do
-			if v and Entity.IsNPC(v) and Entity.IsAlive(v) and FAIO.heroCanCastItems(v) == true then
-				if FAIO.ControllableAttackTiming[Entity.GetIndex(v)] == nil or os.clock() - FAIO.ControllableAttackTiming[Entity.GetIndex(v)] > 0.5 then
-					controllableEntity = v
-					break
-				end
-			end
-		end
-
-	if controllableEntity ~= nil then
-
-		if attackType == "ATTACK_TARGET" then
-			if target ~= nil then
-				Player.AttackTarget(Players.GetLocal(), controllableEntity, target, false)
-				FAIO.ControllableAttackTiming[Entity.GetIndex(controllableEntity)] = os.clock()
-				return
-			end
-		end
-
-		if attackType == "MOVE_TO_POSITION" then
-			if position ~= nil then
-				if not NPC.IsRunning(controllableEntity) then
-					NPC.MoveTo(controllableEntity, position, false, false)
-					FAIO.ControllableAttackTiming[Entity.GetIndex(controllableEntity)] = os.clock()
-					return
-				end
-			end
-		end
-
-	end
-
-	return
-
-end
-
-function FAIO.OrbWalker(myHero, enemy)
-
--- orbwalker needs rewrite; fail timings; cancel attacks due to orb attacks, MAJOR ISSUE
-
-	if not myHero then return end
-	if not enemy then return end
-
-	if NPC.IsChannellingAbility(myHero) then return end
-	if FAIO.isHeroChannelling(myHero) == true then return end
-	if FAIO.heroCanCastItems(myHero) == false then return end
-	if FAIO_utility_functions.inSkillAnimation(myHero) == true then return end
-
-	local myMana = NPC.GetMana(myHero)
-
-	local attackRange = NPC.GetAttackRange(myHero)
-
-	local increasedAS = NPC.GetIncreasedAttackSpeed(myHero)
-	local attackTime = NPC.GetAttackTime(myHero)
-	local movementSpeed = NPC.GetMoveSpeed(myHero)
-
-	local attackPoint
-	local attackBackSwing
-	for i, v in pairs(FAIO_data.attackPointTable) do
-		if i == NPC.GetUnitName(myHero) then
-			attackPoint = v[1] / (1 + (increasedAS/100))
-			attackBackSwing = v[2] / (1 + (increasedAS/100))
-			break
-		end
-	end
-
-	local idleTime = attackTime - attackPoint - attackBackSwing
-
-	local turnTime180degrees = (0.03 * math.pi) / NPC.GetTurnRate(myHero)
-
-	local orbWalkSkill
-	for i, v in pairs(FAIO_data.orbAttackTable) do
-		if i == NPC.GetUnitName(myHero) then
-			orbWalkSkill = NPC.GetAbility(myHero, v)
-			break
-		end
-	end
-
-	if orbWalkSkill then
-		if Ability.GetName(orbWalkSkill) == "viper_poison_attack" then
-			if NPC.HasModifier(enemy, "modifier_viper_poison_attack_slow") then
-				local dieTime = Modifier.GetDieTime(NPC.GetModifier(enemy, "modifier_viper_poison_attack_slow"))
-				if dieTime - GameRules.GetGameTime() > 1.0 then
-					orbWalkSkill = nil
-				end
-			end
-		end
-	end
-
-	if Entity.IsSameTeam(myHero, enemy) then
-		orbWalkSkill = nil
-	end
-
-	if NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_MAGIC_IMMUNE) then
-		orbWalkSkill = nil
-	end
-
-	if FAIO.heroCanCastSpells(myHero, enemy) == false then
-		orbWalkSkill = nil
-	end
-
-	if NPC.IsRanged(myHero) then
-		if FAIO.AttackProjectileCreate > 0 then
-			if os.clock() > FAIO.AttackProjectileCreate and os.clock() < FAIO.AttackProjectileCreate + attackBackSwing + idleTime then
-				FAIO.InAttackBackswing = true
-			else
-				FAIO.InAttackBackswing = false
-			end
-		end
-	else
-		if FAIO.AttackParticleCreate > 0 then
-			if NPC.HasItem(myHero, "item_echo_sabre", true) then
-				if Ability.SecondsSinceLastUse(NPC.GetItem(myHero, "item_echo_sabre", true)) > -1 and Ability.SecondsSinceLastUse(NPC.GetItem(myHero, "item_echo_sabre", true)) < (attackPoint / 1.49) + 0.15 then
-					FAIO.InAttackBackswing = false
-				else
-					if os.clock() > FAIO.AttackAnimationCreate and os.clock() < FAIO.AttackParticleCreate + attackBackSwing + idleTime then
-						FAIO.InAttackBackswing = true
-					else
-						FAIO.InAttackBackswing = false
-					end
-				end
-			else
-				if os.clock() > FAIO.AttackAnimationCreate and os.clock() < FAIO.AttackParticleCreate + attackBackSwing + idleTime then
-					FAIO.InAttackBackswing = true
-				else
-					FAIO.InAttackBackswing = false
-				end
-			end
-		end
-	end
-
-	if os.clock() > FAIO.AttackAnimationCreate and os.clock() < FAIO.AttackParticleCreate then
-		FAIO.InAttackBackswing = false
-	end
-
---	if os.clock() > FAIO.AttackAnimationCreate and os.clock() < FAIO.AttackProjectileCreate then
---		FAIO.InAttackBackswing = false
---	end
-
-	local breakPoint
-		if NPC.IsRanged(myHero) then
-			breakPoint = attackRange * (Menu.GetValue(FAIO_options.optionOrbwalkDistance) / 100)
-		else
-			breakPoint = attackRange
-		end
-
-	local moveDistance = NPC.GetMoveSpeed(myHero) * (attackBackSwing + idleTime - NPC.GetTimeToFace(myHero, enemy)) * (1 - (Menu.GetValue(FAIO_options.optionOrbwalkOffset) / 100))
-		if NPC.IsRanged(myHero) then
-			if (Entity.GetAbsOrigin(enemy) - Entity.GetAbsOrigin(myHero)):Length2D() > breakPoint and (Entity.GetAbsOrigin(enemy) - Entity.GetAbsOrigin(myHero)):Length2D() <= breakPoint + moveDistance then
-				moveDistance = (Entity.GetAbsOrigin(enemy) - Entity.GetAbsOrigin(myHero)):Length2D() - breakPoint
-			end
-		end
-
-	local kiteDistance = 0
-		if (2 * turnTime180degrees) < (attackBackSwing + idleTime) * (1 - (Menu.GetValue(FAIO_options.optionOrbwalkOffset) / 100)) then
-			kiteDistance = ((attackBackSwing + idleTime) * (1 - (Menu.GetValue(FAIO_options.optionOrbwalkOffset) / 100)) - (2 * turnTime180degrees)) * NPC.GetMoveSpeed(myHero)
-		end
-
-	local styleSelector = 0
-		if Menu.GetValue(FAIO_options.optionOrbwalkStyle) == 0 then
-			styleSelector = 1
-		else
-			if Menu.GetValue(FAIO_options.optionOrbwalkMouseStyle) == 1 then
-				styleSelector = 2
-			else
-				if NPC.IsRanged(myHero) then			
-					styleSelector = 2
-				else
-					styleSelector = 1
-				end
-			end
-		end
-	
-	if styleSelector < 2 then
-		if not FAIO.InAttackBackswing then
-			if orbWalkSkill and Ability.IsCastable(orbWalkSkill, myMana) then
-				if os.clock() - FAIO.OrbwalkerDelay > 0.05 + NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) then
-					Ability.CastTarget(orbWalkSkill, enemy)
-					FAIO.OrbwalkerDelay = os.clock()
-					return
-				end
-			else
-				if os.clock() - FAIO.OrbwalkerDelay > 0.05 + NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) and os.clock() - FAIO.AttackAnimationCreate > attackPoint + 0.1 then
-					Player.AttackTarget(Players.GetLocal(), myHero, enemy, false)
-					FAIO.OrbwalkerDelay = os.clock()
-					return
-				end
-			end
-		else
-			if (Entity.GetAbsOrigin(enemy) - Entity.GetAbsOrigin(myHero)):Length2D() > breakPoint then
-			--	if os.clock() - FAIO.OrbwalkerDelay > attackBackSwing + NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) then
-					if moveDistance > 50 then
-						local targetVector = Entity.GetAbsOrigin(myHero) + (Entity.GetAbsOrigin(enemy) - Entity.GetAbsOrigin(myHero)):Normalized():Scaled(moveDistance)
-						NPC.MoveTo(myHero, targetVector, false, false)
-						FAIO.OrbwalkerDelay = os.clock()
-						return
-					end
-		--		end
-	
-			end
-			if Menu.IsEnabled(FAIO_options.optionOrbwalkKiting) then
-				if NPC.IsRanged(myHero) then
-					if (Entity.GetAbsOrigin(enemy) - Entity.GetAbsOrigin(myHero)):Length2D() < breakPoint - 50 then
-						if os.clock() - FAIO.OrbwalkerDelay > attackBackSwing + NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) then
-							if kiteDistance > 50 then
-								local targetVector = Entity.GetAbsOrigin(myHero) + (Entity.GetAbsOrigin(myHero) - Entity.GetAbsOrigin(enemy)):Normalized():Scaled(kiteDistance)
-								NPC.MoveTo(myHero, targetVector, false, false)
-								FAIO.OrbwalkerDelay = os.clock()
-								return
-							end
-						end
-					end
-				end
-			end
-		end
-	else
-		local mousePos = Input.GetWorldCursorPos()
-		local breakPoint2
-			if NPC.IsRanged(myHero) then
-				breakPoint2 = attackRange * (Menu.GetValue(FAIO_options.optionOrbwalkDistanceMouse) / 100)
-			else
-				breakPoint2 = attackRange
-			end
-		local moveDistance2 = NPC.GetMoveSpeed(myHero) * (attackBackSwing + idleTime - NPC.GetTimeToFace(myHero, enemy) - FAIO.TimeToFacePosition(myHero, mousePos)) * (1 - (Menu.GetValue(FAIO_options.optionOrbwalkOffset) / 100))
-		
-		if not FAIO.InAttackBackswing then
-			if orbWalkSkill and Ability.IsCastable(orbWalkSkill, myMana) then
-				if os.clock() - FAIO.OrbwalkerDelay > 0.05 + NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) then
-					Ability.CastTarget(orbWalkSkill, enemy)
-					FAIO.OrbwalkerDelay = os.clock()
-					return
-				end
-			else
-				if os.clock() - FAIO.OrbwalkerDelay > 0.05 + NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) and os.clock() - FAIO.AttackAnimationCreate > attackPoint + 0.1 then
-					Player.AttackTarget(Players.GetLocal(), myHero, enemy, false)
-					FAIO.OrbwalkerDelay = os.clock()
-					return
-				end
-			end
-		else
-			if os.clock() - FAIO.OrbwalkerDelay > attackBackSwing + NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) then
-				local myDisToMouse = (Entity.GetAbsOrigin(myHero) - mousePos):Length2D()
-				if moveDistance2 > 50 and myDisToMouse > Menu.GetValue(FAIO_options.optionOrbwalkMouseHold) then
-					local targetVector = Entity.GetAbsOrigin(myHero) + (mousePos - Entity.GetAbsOrigin(myHero)):Normalized():Scaled(moveDistance2)
-					if not NPC.IsPositionInRange(enemy, targetVector, breakPoint2, 0) then
-						NPC.MoveTo(myHero, targetVector, false, false)
-						FAIO.OrbwalkerDelay = os.clock()
-						return
-					end
-				end
-			end
-		end
-	end
-
 end
 
 function FAIO.TimeToFacePosition(myHero, pos)
@@ -2299,8 +1752,8 @@ end
 
 function FAIO.TargetDisableTimer(myHero, enemy)
 
-	if not myHero then return end
-	if not enemy then return end
+	if not myHero then return 0 end
+	if not enemy then return 0 end
 
 	local stunRootList = {
 		"modifier_stunned",
@@ -2365,12 +1818,10 @@ function FAIO.TargetDisableTimer(myHero, enemy)
 			else
 				return Modifier.GetDieTime(searchMod)
 			end
-		else
-			return 0
 		end
-	else
-		return 0
 	end
+
+	return 0
 
 end
 
@@ -3629,7 +3080,7 @@ function FAIO.PugnaCombo(myHero, enemy)
 							return
 						else
 							if NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_ATTACK_IMMUNE) then
-								FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, Entity.GetAbsOrigin(enemy))
+								FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, Entity.GetAbsOrigin(enemy))
 								return
 							end
 						end	
@@ -3638,7 +3089,7 @@ function FAIO.PugnaCombo(myHero, enemy)
 			end
 		end
 
-		FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+		FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 		return
 	end
 
@@ -3683,7 +3134,7 @@ function FAIO.NSCombo(myHero, enemy)
 			end
 		end
 
-		FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+		FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 		return
 	end
 
@@ -3772,7 +3223,7 @@ function FAIO.UndyingCombo(myHero, enemy)
 			end
 		end
 
-		FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+		FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 		return
 	end
 
@@ -3901,7 +3352,7 @@ function FAIO.CKCombo(myHero, enemy)
 			end
 		end
 
-		FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+		FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 		FAIO.GenericControllableAttackIssuer("ATTACK_TARGET", enemy, nil)
 		return
 	end
@@ -3951,7 +3402,7 @@ function FAIO.NyxCombo(myHero, enemy)
 		end
 
 		if not NPC.HasModifier(myHero, "modifier_nyx_assassin_burrow") then
-			FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+			FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 			return
 		end
 	end
@@ -4031,7 +3482,7 @@ function FAIO.LionCombo(myHero, enemy)
 			end
 		end
 
-		FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+		FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 		return
 	end
 
@@ -4077,7 +3528,7 @@ function FAIO.WDCombo(myHero, enemy)
 			end
 		end
 
-		FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+		FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 		return
 	end
 
@@ -4142,7 +3593,7 @@ function FAIO.SSCombo(myHero, enemy)
 			end
 		end
 
-		FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+		FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 		return
 	end
 
@@ -4204,7 +3655,7 @@ function FAIO.clockwerkCombo(myHero, enemy)
 				return 
 			end
 		end
-	FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+	FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 	end
 end
 
@@ -4279,7 +3730,7 @@ function FAIO.huskarCombo(myHero, enemy)
 
 	if enemy and Menu.IsKeyDown(FAIO_options.optionHeroHuskarHarassKey) then
 		if burningspear and Ability.GetLevel(burningspear) > 0 then
-			FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+			FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 			Engine.ExecuteCommand("dota_range_display " .. attackRange)
 		end
 	else
@@ -4320,7 +3771,7 @@ function FAIO.huskarCombo(myHero, enemy)
 				return
 			end
 		end
-	FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+	FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 	end
 
 	if Menu.IsEnabled(FAIO_options.optionHeroHuskarAutoVit) then
@@ -4406,7 +3857,7 @@ function FAIO.skywrathCombo(myHero, enemy)
 				end
 			end
 		end
-	FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+	FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 	end
 
 end
@@ -4794,7 +4245,7 @@ function FAIO.magnusCombo(myHero, enemy)
 				return
 			end
 		end
-	FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+	FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 	end
 
 	if Menu.IsKeyDown(FAIO_options.optionComboKey) and Menu.IsKeyDown(FAIO_options.optionHeroMagnuscomboKeyAltSkewer) and Entity.GetHealth(enemy) > 0 and FAIO.heroCanCastSpells(myHero, enemy) == true then
@@ -4854,7 +4305,7 @@ function FAIO.magnusCombo(myHero, enemy)
 			end
 		end
 
-	FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+	FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 	end
 					
 	if Menu.IsKeyDown(FAIO_options.optionComboKey) and Menu.IsKeyDown(FAIO_options.optionHeroMagnuscomboKeyAltRP) and Entity.GetHealth(enemy) > 0 and FAIO.heroCanCastSpells(myHero, enemy) == true then
@@ -4947,7 +4398,7 @@ function FAIO.magnusCombo(myHero, enemy)
 				end
 			end
 		end
-	FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+	FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 	end
 	
 
@@ -4987,7 +4438,7 @@ function FAIO.magnusSkewerCombo(myHero, myMana, enemy, skewer, blink)
 				return
 			end
 		end
-	FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+	FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 	end
 
 end
@@ -5095,7 +4546,7 @@ function FAIO.magnusAutoUlt(myHero, myMana, skewer, reversePolarity, shockwave, 
 								Ability.CastPosition(shockwave, Entity.GetAbsOrigin(myHero) + Entity.GetRotation(myHero):GetForward():Normalized():Scaled(50), true)
 								return
 							end
-							FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_MOVE", nil, Entity.GetAbsOrigin(myHero))
+							FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_MOVE", nil, Entity.GetAbsOrigin(myHero))
 							return
 						end
 					else
@@ -5108,7 +4559,7 @@ function FAIO.magnusAutoUlt(myHero, myMana, skewer, reversePolarity, shockwave, 
 								Ability.CastPosition(shockwave, Entity.GetAbsOrigin(myHero) + Entity.GetRotation(myHero):GetForward():Normalized():Scaled(50), true)
 								return
 							end
-							FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_MOVE", nil, Entity.GetAbsOrigin(myHero))
+							FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_MOVE", nil, Entity.GetAbsOrigin(myHero))
 							return
 						end
 					end
@@ -5189,7 +4640,7 @@ function FAIO.DazzleHelper(myHero, enemy)
 			end
 		end
 
-	FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+	FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 	end
 
 end
@@ -5475,7 +4926,7 @@ function FAIO.SFCombo(myHero, enemy)
 							Ability.CastPosition(blink, (Entity.GetAbsOrigin(enemy) + (Entity.GetAbsOrigin(myHero) - Entity.GetAbsOrigin(enemy)):Normalized():Scaled(0.75 * possibleRange)))
 							return
 						else
-							FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, Entity.GetAbsOrigin(enemy))
+							FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, Entity.GetAbsOrigin(enemy))
 							return
 						end
 					else
@@ -5492,7 +4943,7 @@ function FAIO.SFCombo(myHero, enemy)
 						end
 						if NPC.HasModifier(enemy, "modifier_eul_cyclone") then
 							if not NPC.IsEntityInRange(myHero, enemy, 20) then
-								FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, Entity.GetAbsOrigin(enemy))
+								FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, Entity.GetAbsOrigin(enemy))
 								return
 							else
 								local cycloneDieTime = Modifier.GetDieTime(NPC.GetModifier(enemy, "modifier_eul_cyclone"))
@@ -5560,7 +5011,7 @@ function FAIO.SFCombo(myHero, enemy)
 					end
 				end
 			end
-		FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+		FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 		return
 		end
 	end
@@ -5792,17 +5243,17 @@ function FAIO.WillowCombo(myHero, enemy)
 		if NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_INVULNERABLE) or NPC.HasModifier(enemy, "modifier_rod_of_atos_debuff") or NPC.HasModifier(myHero, "modifier_dark_willow_bedlam") then
 			if not NPC.HasModifier(myHero, "modifier_dark_willow_shadow_realm_buff") then
 				if not NPC.IsEntityInRange(myHero, enemy, 150) then
-					FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, Entity.GetAbsOrigin(enemy))
+					FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, Entity.GetAbsOrigin(enemy))
 					return
 				end
 			else
 				local creaTime = Modifier.GetCreationTime(NPC.GetModifier(myHero, "modifier_dark_willow_shadow_realm_buff"))
 				if GameRules.GetGameTime() - creaTime >= 3 then
-					FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+					FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 					return
 				else
 					if not NPC.IsEntityInRange(myHero, enemy, 150) then
-						FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, Entity.GetAbsOrigin(enemy))
+						FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, Entity.GetAbsOrigin(enemy))
 						return
 					end
 				end
@@ -5811,16 +5262,16 @@ function FAIO.WillowCombo(myHero, enemy)
 			if NPC.HasModifier(myHero, "modifier_dark_willow_shadow_realm_buff") then
 				local creaTime = Modifier.GetCreationTime(NPC.GetModifier(myHero, "modifier_dark_willow_shadow_realm_buff"))
 				if GameRules.GetGameTime() - creaTime >= 3 then
-					FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+					FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 					return
 				else
 					if not NPC.IsEntityInRange(myHero, enemy, 150) then
-						FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, Entity.GetAbsOrigin(enemy))
+						FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, Entity.GetAbsOrigin(enemy))
 						return
 					end
 				end
 			else	
-				FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+				FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 				return
 			end
 		end
@@ -5882,7 +5333,7 @@ function FAIO.SilencerCombo(myHero, enemy)
 				end
 			end				
 		end
-	FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+	FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 	return
 	end
 		
@@ -6003,7 +5454,7 @@ function FAIO.ODCombo(myHero, enemy)
 				end
 			end
 		end
-	FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+	FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 	return
 	end
 
@@ -6264,7 +5715,7 @@ function FAIO.NecroCombo(myHero, enemy)
 				end
 
 			end
-			FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+			FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 		end
 	end
 
@@ -6671,7 +6122,7 @@ function FAIO.PACombo(myHero, enemy)
 				end
 			end
 
-		FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+		FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 		return
 		end
 	end
@@ -6783,7 +6234,7 @@ function FAIO.AntiMageCombo(myHero, enemy)
 		end
 
 	FAIO_itemHandler.itemUsage(myHero, enemy)
-	FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+	FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 	FAIO.MantaIlluController(enemy, nil, myHero, myHero)
 
 	end
@@ -6882,7 +6333,7 @@ function FAIO.tinyCombo(myHero, enemy)
 				return 
 			end
 		end
-	FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+	FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 	end
 end
 
@@ -6943,7 +6394,7 @@ function FAIO.WindRunnerCombo(myHero, enemy)
 				end
 			end
 		end
-	FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+	FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 	end
 
 	if NPC.IsEntityInRange(myHero, enemy, NPC.GetAttackRange(myHero)) and Entity.GetHealth(enemy) > 0 and FAIO.heroCanCastSpells(myHero, enemy) == true then
@@ -7066,7 +6517,7 @@ function FAIO.TimberCombo(myHero, enemy)
 						return
 					else
 						if Ability.IsReady(timberChain) then
-							FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+							FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 							return
 						end
 					end
@@ -7096,7 +6547,7 @@ function FAIO.TimberCombo(myHero, enemy)
 					end
 				end
 			end
-		FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+		FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 		end
 	end
 
@@ -7327,7 +6778,7 @@ function FAIO.EmberCombo(myHero, enemy)
 				end
 			end
 		end
-	FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+	FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 	end	
 end
 
@@ -7379,7 +6830,7 @@ function FAIO.UrsaCombo(myHero, enemy)
 				end
 			end
 		end
-		FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+		FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 		return
 	end
 
@@ -7424,12 +6875,12 @@ function FAIO.TACombo(myHero, enemy)
 		if Menu.IsKeyDown(FAIO_options.optionHeroTAHarassKey) then
 			if FAIO.TApsiBladesSpill(myHero, enemy, myAttackRange) ~= nil then
 				local spillNPC = FAIO.TApsiBladesSpill(myHero, enemy, myAttackRange)
-				FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", spillNPC, nil)
+				FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", spillNPC, nil)
 				return
 			else
 				if FAIO.TApsiBladesSpillBestPos(myHero, enemy, myAttackRange, Menu.GetValue(FAIO_options.optionHeroTAHarassRange)):__tostring() ~= Vector():__tostring() then
 					local movePos = FAIO.TApsiBladesSpillBestPos(myHero, enemy, myAttackRange, Menu.GetValue(FAIO_options.optionHeroTAHarassRange))
-					FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, movePos)
+					FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, movePos)
 					return
 				end
 			end
@@ -7472,7 +6923,7 @@ function FAIO.TACombo(myHero, enemy)
 				return
 			end
 		end
-	FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+	FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 	end
 		
 end
@@ -7682,9 +7133,9 @@ function FAIO.LegionCombo(myHero, enemy)
 			if duel and Ability.IsReady(duel) and Ability.IsCastable(duel, myMana) and FAIO.heroCanCastSpells(myHero, enemy) == true and not NPC.IsEntityInRange(myHero, enemy, 150) then
 				local rotationVec = Entity.GetRotation(enemy):GetForward():Normalized()
 				local pos = Entity.GetAbsOrigin(enemy) + rotationVec:Scaled(100)
-				FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, pos)
+				FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, pos)
 			else	
-				FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+				FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 			end
 		end
 	end
@@ -7795,7 +7246,7 @@ function FAIO.SlardarCombo(myHero, enemy)
 				end
 			end
 		end
-	FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+	FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 	end
 end
 
@@ -7827,7 +7278,7 @@ function FAIO.ClinkzCombo(myHero, enemy)
 					return
 				end
 			end
-		FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+		FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 		end
 	end					
 end
@@ -7863,13 +7314,13 @@ function FAIO.ClinkzAutoHarass(myHero, myMana, searingArrows)
 			return
 		else
 			if not NPC.IsPositionInRange(myHero, mousePos, 50, 0) then
-				FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, mousePos)
+				FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, mousePos)
 				return
 			end
 		end
 	else
 		if not NPC.IsPositionInRange(myHero, mousePos, 50, 0) then
-			FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, mousePos)
+			FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, mousePos)
 			return
 		end
 	end
@@ -7965,7 +7416,7 @@ function FAIO.QoPCombo(myHero, enemy)
 				return
 			end
 		end
-	FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+	FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 	end
 
 end
@@ -8093,7 +7544,7 @@ function FAIO.SvenCombo(myHero, enemy)
 				end
 			end
 		end
-	FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+	FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 	end
 
 end
@@ -8242,7 +7693,7 @@ function FAIO.VisageCombo(myHero, enemy)
 				end
 			end	
 		end
-	FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+	FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 	end
 end
 
@@ -8728,7 +8179,7 @@ function FAIO.ArcWardenCombo(myHero, enemy)
 				end
 			end
 
-			FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+			FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 			for _, necro in ipairs(FAIO.GetNecronomiconEntityTable(myHero, myHero)) do
 				FAIO.NecronomiconController(necro, enemy, nil)
 			end
@@ -10381,7 +9832,7 @@ function FAIO.ZuusCombo(myHero, enemy)
 				end
 			end
 			if Menu.IsEnabled(FAIO_options.optionHeroZuusRightClick) then
-				FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+				FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 			end
 		end
 	end
@@ -10590,7 +10041,7 @@ function FAIO.ProphetHelper(myHero, enemy)
 
 	if enemy and NPC.IsEntityInRange(myHero, enemy, 2000) then	
 		if Menu.IsKeyDown(FAIO_options.optionComboKey) and Entity.IsAlive(enemy) and FAIO.heroCanCastItems(myHero) == true then
-			FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+			FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 		end
 	end
 	
@@ -10923,7 +10374,7 @@ function FAIO.InvokerCombo(myHero, enemy)
 		if enemy and Entity.GetHealth(enemy) > 0 then
 			if NPC.IsEntityInRange(myHero, enemy, 1500) and not NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_MAGIC_IMMUNE) then
 				if FAIO.InvokerComboSelector == 0 then
-					FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+					FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 				elseif FAIO.InvokerComboSelector == 1 then
 					FAIO.InvokerComboCSAlacritySpirit(myHero, myMana, enemy, coldSnap, alacrity, forgeSpirit, blink, invoke)
 				elseif FAIO.InvokerComboSelector == 2 then
@@ -10954,7 +10405,7 @@ function FAIO.InvokerCombo(myHero, enemy)
 					FAIO.InvokerComboCustomMode(myHero, myMana, enemy, blink, invoke)
 				end
 			else
-				FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+				FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 			end
 		end
 	else
@@ -10982,7 +10433,7 @@ function FAIO.InvokerIceWallHelper(myHero, enemy, iceWall, myMana)
 		return
 	else
 		if math.abs(delta - beta) > 7.5 then
-			FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, Entity.GetAbsOrigin(myHero) + (Entity.GetAbsOrigin(enemy) - Entity.GetAbsOrigin(myHero)):Normalized():Scaled(5):Rotated(Angle(0, beta, 0)))
+			FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, Entity.GetAbsOrigin(myHero) + (Entity.GetAbsOrigin(enemy) - Entity.GetAbsOrigin(myHero)):Normalized():Scaled(5):Rotated(Angle(0, beta, 0)))
 			return
 		else
 			Ability.CastNoTarget(iceWall)
@@ -11064,7 +10515,7 @@ function FAIO.InvokerComboCSAlacritySpirit(myHero, myMana, enemy, coldSnap, alac
 	end
 
 	FAIO.invokerProcessInstancesWhileComboing(myHero)
-	FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+	FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 	return
 
 end
@@ -11140,7 +10591,7 @@ function FAIO.InvokerComboCSSpiritSunstrike(myHero, myMana, enemy, coldSnap, for
 	end
 
 	FAIO.invokerProcessInstancesWhileComboing(myHero)
-	FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+	FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 	return
 
 end
@@ -11321,7 +10772,7 @@ function FAIO.InvokerComboTornadoEmpIcewall(myHero, myMana, enemy, tornado, emp,
 
 	FAIO.invokerProcessInstancesWhileComboing(myHero)
 	if not NPC.HasModifier(enemy, "modifier_invoker_tornado") then
-		FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+		FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 	end
 	return
 
@@ -11489,7 +10940,7 @@ function FAIO.InvokerComboTornadoMeteorBlast(myHero, myMana, enemy, tornado, cha
 
 	FAIO.invokerProcessInstancesWhileComboing(myHero)
 	if not NPC.HasModifier(enemy, "modifier_invoker_tornado") then
-		FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+		FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 	end
 	return
 
@@ -11595,7 +11046,7 @@ function FAIO.InvokerComboEulsSunstrikeMeteorBlast(myHero, myMana, enemy, sunStr
 
 	FAIO.invokerProcessInstancesWhileComboing(myHero)
 	if not NPC.HasModifier(enemy, "modifier_eul_cyclone") then
-		FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+		FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 	end
 	return
 
@@ -11759,7 +11210,7 @@ function FAIO.InvokerComboAghaTornadoEmpMeteorBlast(myHero, myMana, enemy, torna
 
 	FAIO.invokerProcessInstancesWhileComboing(myHero)
 	if not NPC.HasModifier(enemy, "modifier_invoker_tornado") then
-		FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+		FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 	end
 	return
 
@@ -11917,7 +11368,7 @@ function FAIO.InvokerComboAghaTornadoSunstrikeMeteorBlast(myHero, myMana, enemy,
 
 	FAIO.invokerProcessInstancesWhileComboing(myHero)
 	if not NPC.HasModifier(enemy, "modifier_invoker_tornado") then
-		FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+		FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 	end
 	return
 		
@@ -12128,7 +11579,7 @@ function FAIO.InvokerComboRefresherAghaTornadoSunstrikeMeteorBlast(myHero, myMan
 	
 	FAIO.invokerProcessInstancesWhileComboing(myHero)
 	if not NPC.HasModifier(enemy, "modifier_invoker_tornado") then
-		FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+		FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 	end
 	return		
 end
@@ -12353,7 +11804,7 @@ function FAIO.InvokerComboRefresherAghaTornadoEmpMeteorBlast(myHero, myMana, ene
 
 	FAIO.invokerProcessInstancesWhileComboing(myHero)
 	if not NPC.HasModifier(enemy, "modifier_invoker_tornado") then
-		FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+		FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 	end
 	return		
 end
@@ -12497,7 +11948,7 @@ function FAIO.InvokerComboRefresherAghaBlastMeteorSunstrike(myHero, myMana, enem
 	end
 
 	FAIO.invokerProcessInstancesWhileComboing(myHero)
-	FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+	FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 	return
 
 end
@@ -13075,7 +12526,7 @@ function FAIO.InvokerComboCustomMode(myHero, myMana, enemy, blink, invoke)
 	end
 
 	if not NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_INVULNERABLE) then
-		FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+		FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 		FAIO.invokerForgedSpiritController(myHero, enemy)
 	end
 
@@ -13117,7 +12568,7 @@ function FAIO.InvokerComboCustomMode(myHero, myMana, enemy, blink, invoke)
 						if skillProcessing[Ability.GetName(skill)][1] == "no target" then
 							if Ability.GetName(skill) == "invoker_ice_wall" then
 								if not NPC.IsEntityInRange(myHero, enemy, 600) then
-									FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+									FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 									return
 								else
 									FAIO.InvokerIceWallHelper(myHero, enemy, skill, myMana)
@@ -13423,10 +12874,10 @@ function FAIO.InvokerComboDynamicMode(myHero, myMana, enemy, blink, invoke)
 
 	if not NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_INVULNERABLE) then
 		if skill and not Ability.GetName(skill) == "invoker_ice_wall" then
-			FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+			FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 			FAIO.invokerForgedSpiritController(myHero, enemy)
 		elseif not skill or (skill and not Ability.IsCastable(skill, myMana)) then
-			FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+			FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 			FAIO.invokerForgedSpiritController(myHero, enemy)
 		end
 	end
@@ -13468,7 +12919,7 @@ function FAIO.InvokerComboDynamicMode(myHero, myMana, enemy, blink, invoke)
 						if skillProcessing[Ability.GetName(skill)][1] == "no target" then
 							if Ability.GetName(skill) == "invoker_ice_wall" then
 								if not NPC.IsEntityInRange(myHero, enemy, 600) then
-									FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+									FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 									return
 								else
 									FAIO.InvokerIceWallHelper(myHero, enemy, skill, myMana)
@@ -16112,7 +15563,7 @@ function FAIO.TinkerFullCombo(myHero, enemy, myMana, laser, missile, march, rear
 		end
 	end
 				
-	FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+	FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 	return
 
 end
@@ -16240,7 +15691,7 @@ function FAIO.TinkerRocketSpam(myHero, myMana, missile, rearm, blink)
 		if not NPC.IsPositionInRange(myHero, mousePos, 50, 0) then
 			if not Menu.IsEnabled(FAIO_options.optionHeroTinkerRocketBlink) then
 				if Menu.IsEnabled(FAIO_options.optionHeroTinkerRocketMove) then
-					FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, mousePos)
+					FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, mousePos)
 					return
 				end
 			else
@@ -16254,11 +15705,11 @@ function FAIO.TinkerRocketSpam(myHero, myMana, missile, rearm, blink)
 							return
 						end
 					else
-						FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, mousePos)
+						FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, mousePos)
 						return
 					end
 				else
-					FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, mousePos)
+					FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, mousePos)
 					return
 				end
 			end
@@ -16504,7 +15955,7 @@ function FAIO.TinkerJungleFarm(myHero, myMana, march, rearm, blink, travels)
 				return
 			end
 		end
-		FAIO.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, movePos)
+		FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, movePos)
 	end
 
 	if not NPC.IsRunning(myHero) and NPC.IsPositionInRange(myHero, movePos, 35, 0) then
@@ -17961,6 +17412,8 @@ end
 
 FAIO.humanizerEnabled = nil
 FAIO.humanizerMaxTime = 0
+FAIO.humanizerLingerTime = 0
+
 
 function FAIO.humanizerMouseDelayInit()
 
@@ -17973,6 +17426,7 @@ function FAIO.humanizerMouseDelayInit()
 
 	if FAIO.humanizerMaxTime < 1 then
 		FAIO.humanizerMaxTime = Config.ReadInt("", "Unit Order Time", defaultValue)
+		FAIO.humanizerLingerTime = Config.ReadInt("", "Linger Time", defaultValue) / 1000	
 	end
 
 	return

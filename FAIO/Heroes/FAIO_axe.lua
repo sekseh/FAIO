@@ -121,7 +121,7 @@ function FAIO_axe.comboExecute(myHero, enemy, myMana, callRange)
 		end
 	end
 
-	FAIO_axe.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+	FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 	return
 
 end

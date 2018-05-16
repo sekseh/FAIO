@@ -334,7 +334,7 @@ function FAIO_lastHitter.lastHitterExecuteLastHit(myHero, attackPoint)
 				if #Entity.GetHeroesInRadius(myHero, searchRange, Enum.TeamType.TEAM_ENEMY) < 1 then
 					if Menu.IsEnabled(FAIO_options.optionLastHitAutoModeMove) then
 						if not NPC.IsPositionInRange(myHero, Input.GetWorldCursorPos(), Menu.GetValue(FAIO_options.optionLastHitAutoModeMoveRange), 0) then
-							FAIO_lastHitter.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, Input.GetWorldCursorPos())
+							FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, Input.GetWorldCursorPos())
 							return
 						else
 							if FAIO_lastHitter.lastHitInAttackAnimation(myHero, attackPoint) == true then
@@ -349,7 +349,7 @@ function FAIO_lastHitter.lastHitterExecuteLastHit(myHero, attackPoint)
 						end
 					end
 				else
-					if not FAIO_lastHitter.lastHitBackswingChecker(myHero) then
+					if FAIO_orbwalker.orbwalkerInAttackAnimation() == false then
 						for _, v in ipairs(Entity.GetHeroesInRadius(myHero, searchRange, Enum.TeamType.TEAM_ENEMY)) do
 							if v then
 								local target = FAIO_lastHitter.targetChecker(v)
@@ -361,13 +361,13 @@ function FAIO_lastHitter.lastHitterExecuteLastHit(myHero, attackPoint)
 													Ability.CastTarget(FAIO_lastHitter.lastHitterOrbSkillEnemy, target)
 													return
 												else
-													FAIO_lastHitter.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", v, nil)
+													FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", v, nil)
 													return
 												end
 											else
 												if Menu.IsEnabled(FAIO_options.optionLastHitAutoModeMove) then
 													if not NPC.IsPositionInRange(myHero, Input.GetWorldCursorPos(), Menu.GetValue(FAIO_options.optionLastHitAutoModeMoveRange), 0) then
-														FAIO_lastHitter.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, Input.GetWorldCursorPos())
+														FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, Input.GetWorldCursorPos())
 														return
 													else
 														if FAIO_lastHitter.lastHitInAttackAnimation(myHero, attackPoint) == true then
@@ -387,14 +387,14 @@ function FAIO_lastHitter.lastHitterExecuteLastHit(myHero, attackPoint)
 												Ability.CastTarget(FAIO_lastHitter.lastHitterOrbSkillEnemy, target)
 												return
 											else
-												FAIO_lastHitter.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", v, nil)
+												FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", v, nil)
 												return
 											end
 										end
 									else
 										if Menu.IsEnabled(FAIO_options.optionLastHitAutoModeMove) then
 											if not NPC.IsPositionInRange(myHero, Input.GetWorldCursorPos(), Menu.GetValue(FAIO_options.optionLastHitAutoModeMoveRange), 0) then
-												FAIO_lastHitter.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, Input.GetWorldCursorPos())
+												FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, Input.GetWorldCursorPos())
 												return
 											else
 												if FAIO_lastHitter.lastHitInAttackAnimation(myHero, attackPoint) == true then
@@ -412,7 +412,7 @@ function FAIO_lastHitter.lastHitterExecuteLastHit(myHero, attackPoint)
 								else
 									if Menu.IsEnabled(FAIO_options.optionLastHitAutoModeMove) then
 										if not NPC.IsPositionInRange(myHero, Input.GetWorldCursorPos(), Menu.GetValue(FAIO_options.optionLastHitAutoModeMoveRange), 0) then
-											FAIO_lastHitter.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, Input.GetWorldCursorPos())
+											FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, Input.GetWorldCursorPos())
 											return
 										else
 											if FAIO_lastHitter.lastHitInAttackAnimation(myHero, attackPoint) == true then
@@ -430,7 +430,7 @@ function FAIO_lastHitter.lastHitterExecuteLastHit(myHero, attackPoint)
 							else
 								if Menu.IsEnabled(FAIO_options.optionLastHitAutoModeMove) then
 									if not NPC.IsPositionInRange(myHero, Input.GetWorldCursorPos(), Menu.GetValue(FAIO_options.optionLastHitAutoModeMoveRange), 0) then
-										FAIO_lastHitter.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, Input.GetWorldCursorPos())
+										FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, Input.GetWorldCursorPos())
 										return
 									else
 										if FAIO_lastHitter.lastHitInAttackAnimation(myHero, attackPoint) == true then
@@ -449,7 +449,7 @@ function FAIO_lastHitter.lastHitterExecuteLastHit(myHero, attackPoint)
 					else
 						if Menu.IsEnabled(FAIO_options.optionLastHitAutoModeMove) then
 							if not NPC.IsPositionInRange(myHero, Input.GetWorldCursorPos(), Menu.GetValue(FAIO_options.optionLastHitAutoModeMoveRange), 0) then
-								FAIO_lastHitter.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, Input.GetWorldCursorPos())
+								FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, Input.GetWorldCursorPos())
 								return
 							else
 								if FAIO_lastHitter.lastHitInAttackAnimation(myHero, attackPoint) == true then
@@ -468,7 +468,7 @@ function FAIO_lastHitter.lastHitterExecuteLastHit(myHero, attackPoint)
 			else
 				if Menu.IsEnabled(FAIO_options.optionLastHitAutoModeMove) then
 					if not NPC.IsPositionInRange(myHero, Input.GetWorldCursorPos(), Menu.GetValue(FAIO_options.optionLastHitAutoModeMoveRange), 0) then
-						FAIO_lastHitter.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, Input.GetWorldCursorPos())
+						FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, Input.GetWorldCursorPos())
 						return
 					else
 						if FAIO_lastHitter.lastHitInAttackAnimation(myHero, attackPoint) == true then
@@ -507,7 +507,7 @@ function FAIO_lastHitter.lastHitterExecuteLastHit(myHero, attackPoint)
 						if Menu.IsEnabled(FAIO_options.optionLastHitAutoModeMove) then
 							if hitTime - curTime - FAIO_lastHitter.lastHitterTimingOffsetter(myHero, target) > 0.15 then
 								if not NPC.IsPositionInRange(myHero, Input.GetWorldCursorPos(), Menu.GetValue(FAIO_options.optionLastHitAutoModeMoveRange), 0) then
-									FAIO_lastHitter.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, Input.GetWorldCursorPos())
+									FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, Input.GetWorldCursorPos())
 									return
 								end
 							end
@@ -673,58 +673,6 @@ function FAIO_lastHitter.lastHitGetAttackerCount(myHero, target)
 	end
 				
 	return count
-
-end
-
-function FAIO_lastHitter.lastHitBackswingChecker(myHero)
-
-	if not myHero then return false end
-
-	local increasedAS = NPC.GetIncreasedAttackSpeed(myHero)
-	local attackTime = NPC.GetAttackTime(myHero)
-	local attackPoint
-	local attackBackSwing
-	for i, v in pairs(FAIO_data.attackPointTable) do
-		if i == NPC.GetUnitName(myHero) then
-			attackPoint = v[1] / (1 + (increasedAS/100))
-			attackBackSwing = v[2] / (1 + (increasedAS/100))
-			break
-		end
-	end
-
-	local idleTime = attackTime - attackPoint - attackBackSwing
-
-	if NPC.IsRanged(myHero) then
-		if FAIO_lastHitter.AttackProjectileCreate > 0 then
-			if os.clock() > FAIO_lastHitter.AttackAnimationCreate and os.clock() < FAIO_lastHitter.AttackProjectileCreate + attackBackSwing + idleTime then
-				return true
-			else
-				return false
-			end
-		end
-	else
-		if FAIO_lastHitter.AttackParticleCreate > 0 then
-			if NPC.HasItem(myHero, "item_echo_sabre", true) then
-				if Ability.SecondsSinceLastUse(NPC.GetItem(myHero, "item_echo_sabre", true)) > -1 and Ability.SecondsSinceLastUse(NPC.GetItem(myHero, "item_echo_sabre", true)) < (attackPoint / 1.49) + 0.15 then
-					return false
-				else
-					if os.clock() > FAIO_lastHitter.AttackAnimationCreate and os.clock() < FAIO_lastHitter.AttackParticleCreate + attackBackSwing + idleTime then
-						return true
-					else
-						return false
-					end
-				end
-			else
-				if os.clock() > FAIO_lastHitter.AttackAnimationCreate and os.clock() < FAIO_lastHitter.AttackParticleCreate + attackBackSwing + idleTime then
-					return true
-				else
-					return false
-				end
-			end
-		end
-	end
-
-	return false
 
 end
 

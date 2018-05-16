@@ -82,7 +82,7 @@ function FAIO_vengeful_spirit.comboExecute(myHero, enemy, myMana)
 		end
 	end	
 
-	FAIO_vengeful_spirit.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+	FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 	return
 
 end

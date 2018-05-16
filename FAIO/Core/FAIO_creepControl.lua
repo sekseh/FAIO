@@ -160,27 +160,6 @@ function FAIO_creepControl.controllableLegitHandler(myHero, target)
 		end
 	end
 
---	local check = false
---	for i, v in ipairs(FAIO_creepControl.ControllableEntityTable) do
---		if FAIO_creepControl.controllableActionTracker(v, os.clock(), "attack", target, 0.255) == true then
---			check = true
---			break
---		end
---	end
---
---	if check then
---		FAIO_creepControl.selectControllableUnits(myHero, FAIO_creepControl.ControllableEntityTable)
---		for i = 1, #Player.GetSelectedUnits(Players.GetLocal()) do
---			local index = Entity.GetIndex(Player.GetSelectedUnits(Players.GetLocal())[i])
---			if FAIO_creepControl.ControllableActionTable[index] ~= nil then
---				Player.AttackTarget(Players.GetLocal(), Player.GetSelectedUnits(Players.GetLocal())[i], target, false)
---				FAIO_creepControl.ControllableActionTable[index] = { time = os.clock(), order = "attack", target = target, recurring = os.clock() }
---			end
---		end	
---		FAIO_creepControl.mainTick = os.clock()
---		return
---	end
-
 	local neutralNPC
 	local neutralAbility
 	local neutralTargeting

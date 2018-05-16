@@ -209,7 +209,7 @@ function FAIO_pudge.comboExecute(myHero, enemy, myMana, maxInitRange)
 						FAIO_skillHandler.executeSkillOrder(force, myHero)
 						return
 					else
-						FAIO_pudge.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, predPos)
+						FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, predPos)
 						return
 					end
 				end
@@ -235,7 +235,7 @@ function FAIO_pudge.comboExecute(myHero, enemy, myMana, maxInitRange)
 						FAIO_skillHandler.executeSkillOrder(force, myHero)
 						return
 					else
-						FAIO_pudge.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, predPos)
+						FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, predPos)
 						return
 					end
 				end
@@ -291,7 +291,7 @@ function FAIO_pudge.comboExecute(myHero, enemy, myMana, maxInitRange)
 		end
 
 	if not NPC.HasModifier(enemy, "modifier_pudge_meat_hook") and not attCheck then
-		FAIO_pudge.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+		FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 		return
 	end
 
@@ -323,7 +323,7 @@ function FAIO_pudge.hookComboExecute(myHero, myMana, npc)
 				FAIO_itemHandler.itemUsageSmartOrder(myHero, npc, true)
 			end
 			if not NPC.HasModifier(npc, "modifier_pudge_meat_hook") then
-				FAIO_pudge.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", npc, nil)
+				FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", npc, nil)
 			end
 		end	
 	end

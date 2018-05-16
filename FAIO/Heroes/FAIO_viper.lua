@@ -4,6 +4,8 @@ local Q = nil
 local W = nil
 local ult = nil
 
+FAIO_viper.harassTicker = 0
+
 function FAIO_viper.combo(myHero, enemy)
 
 	if not Menu.IsEnabled(FAIO_options.optionHeroViper) then return end
@@ -31,6 +33,7 @@ function FAIO_viper.combo(myHero, enemy)
 
 	if enemy and NPC.IsEntityInRange(myHero, enemy, 3000) then
 		if Menu.IsKeyDown(FAIO_options.optionComboKey) and Entity.IsAlive(enemy) then
+
 			FAIO_viper.system(switch, function (continue, wait)
 
 				continue(FAIO_viper.comboExecute(myHero, enemy, myMana))
@@ -65,7 +68,7 @@ function FAIO_viper.comboExecute(myHero, enemy, myMana)
 	if FAIO_skillHandler.skillIsReady(ult) then
 		if Menu.IsEnabled(FAIO_options.optionHeroViperForceUlt) then
 			if not NPC.IsEntityInRange(myHero, enemy, Ability.GetCastRange(ult)) then
-				FAIO_viper.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, Entity.GetAbsOrigin(enemy))
+				FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, Entity.GetAbsOrigin(enemy))
 				return
 			else
 				if FAIO_skillHandler.skillIsCastable(ult, Ability.GetCastRange(ult), enemy, nil, false) then
@@ -82,7 +85,7 @@ function FAIO_viper.comboExecute(myHero, enemy, myMana)
 		end
 	end
 							
-	FAIO_viper.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+	FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 	return
 
 end
@@ -110,18 +113,23 @@ function FAIO_viper.ViperAutoHarass(myHero, myMana)
 
 	local mousePos = Input.GetWorldCursorPos()
 	if harassTarget ~= nil then
-		if not FAIO_lastHitter.lastHitBackswingChecker(myHero) then
-			Ability.CastTarget(Q, harassTarget)
-			return
+		if FAIO_orbwalker.orbwalkerIsInAttackBackswing(myHero) == false then
+			if FAIO_orbwalker.orbwalkerInAttackAnimation() == false and Ability.IsCastable(Q, myMana) then
+				if os.clock() > FAIO_viper.harassTicker then
+					Ability.CastTarget(Q, harassTarget)
+					FAIO_viper.harassTicker = os.clock() + 0.2
+					return
+				end
+			end
 		else
 			if not NPC.IsPositionInRange(myHero, mousePos, 50, 0) then
-				FAIO_viper.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, mousePos)
+				FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, mousePos)
 				return
 			end
 		end
 	else
 		if not NPC.IsPositionInRange(myHero, mousePos, 50, 0) then
-			FAIO_viper.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, mousePos)
+			FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, mousePos)
 			return
 		end
 	end
@@ -143,7 +151,7 @@ function FAIO_viper.ViperFarmHelper(myHero, myMana)
 	if FAIO_viper.heroCanCastSpells(myHero, enemy) == false then return end
 	if FAIO_viper.isHeroChannelling(myHero) == true then return end 
 	if FAIO_viper.IsHeroInvisible(myHero) == true then return end
-Log.Write("test")
+
 	for _, creeps in ipairs(Entity.GetUnitsInRadius(myHero, 800, Enum.TeamType.TEAM_ENEMY)) do
 		if creeps and Entity.IsNPC(creeps) and not Entity.IsHero(creeps) and Entity.IsAlive(creeps) and not Entity.IsDormant(creeps) and not NPC.IsWaitingToSpawn(creeps) and NPC.GetUnitName(creeps) ~= "npc_dota_neutral_caster" and NPC.IsCreep(creeps) and NPC.GetUnitName(creeps) ~= nil then
 			if creeps ~= nil and not NPC.IsRunning(creeps) and NPC.IsAttacking(creeps) and not NPC.IsRanged(creeps) and not NPC.HasModifier(creeps, "modifier_viper_nethertoxin") and #Entity.GetUnitsInRadius(creeps, 290, Enum.TeamType.TEAM_FRIEND) >= Menu.GetValue(FAIO_options.optionHeroViperFarmCount) - 1 then

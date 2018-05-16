@@ -47,6 +47,7 @@ FAIO_data.heroList = {
 	"npc_dota_hero_undying",
 	"npc_dota_hero_viper",
 	"npc_dota_hero_pudge",
+	"npc_dota_hero_drow_ranger",
 	"npc_dota_hero_vengefulspirit"
 		}
 

@@ -83,7 +83,7 @@ function FAIO_centaur.comboExecute(myHero, enemy, myMana, stunRange)
 		return
 	end
 
-	FAIO_centaur.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+	FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 	return
 
 end

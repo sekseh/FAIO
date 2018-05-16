@@ -305,6 +305,14 @@ FAIO_options.optionHeroVSBlink = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "2
 FAIO_options.optionHeroVSBlinkRange = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "2. Agility heroes", "Vengeful Spirit" }, "2.1 Blink range to enemy {{vengeful}}", "will keep distance to enemy", 100, 400, 50)
 FAIO_options.optionHeroVSStun = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "2. Agility heroes", "Vengeful Spirit" }, "3. Force stun first", "will always use stun before wave of terror")
 
+FAIO_options.optionHeroDrow = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "2. Agility heroes", "Drow Ranger" }, "0. Enable {{Drow Ranger}}", "")
+FAIO_options.optionHeroDrowBlink = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "2. Agility heroes", "Drow Ranger" }, "1. Use Blink in combo {{Drow Ranger}}", "")
+FAIO_options.optionHeroDrowBlinkRange = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "2. Agility heroes", "Drow Ranger" }, "1.1 Blink range to enemy {{Drow Ranger}}", "Will keep distance to enemy", 200, 600, 50)
+FAIO_options.optionHeroDrowGust = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "2. Agility heroes", "Drow Ranger" }, "2. Use gust in combo {{Drow Ranger}}", "")
+FAIO_options.optionHeroDrowGustMode = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "2. Agility heroes", "Drow Ranger" }, "2.1 Gust mode {{Drow Ranger}}", "", 0, 1, 1)
+FAIO_options.optionHeroDrowHarass = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "2. Agility heroes", "Drow Ranger" }, "3. Use Frost Arrow to harass {{Drow Ranger}}", "")
+FAIO_options.optionHeroDrowHarassKey = Menu.AddKeyOption({ ".FAIO", "3. Hero Scripts", "2. Agility heroes", "Drow Ranger" }, "3.1 harass key {{Drow Ranger}}", Enum.ButtonCode.KEY_P)
+
 		-- INT
 FAIO_options.optionHeroSky = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "3. Intelligence heroes", "Skywrath Mage" }, "0. Enable {{sky}}", "full combo")
 FAIO_options.optionHeroSkyBlink = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "3. Intelligence heroes", "Skywrath Mage" }, "0.1 Use blink in combo {{sky}}", "")
@@ -621,6 +629,9 @@ Menu.SetValueName(FAIO_options.optionLinkensHex, 0, 'OFF')
 Menu.SetValueName(FAIO_options.optionLinkensBlood, 0, 'OFF')
 Menu.SetValueName(FAIO_options.optionLinkensOrchid, 0, 'OFF')
 Menu.SetValueName(FAIO_options.optionLinkensPike, 0, 'OFF')
+
+Menu.SetValueName(FAIO_options.optionHeroDrowGustMode, 0, 'only if needed')
+Menu.SetValueName(FAIO_options.optionHeroDrowGustMode, 1, 'always')
 
 Menu.SetValueName(FAIO_options.optionHeroEmberUlt, 0, 'use all charges')
 Menu.SetValueName(FAIO_options.optionHeroEmberUlt, 1, 'use one charge')

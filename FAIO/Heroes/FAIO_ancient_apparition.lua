@@ -53,7 +53,7 @@ function FAIO_ancient_apparition.comboExecute(myHero, enemy, myMana)
 		end
 	end
 
-	FAIO_ancient_apparition.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
+	FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
 	return
 
 end
