@@ -337,13 +337,13 @@ function FAIO_lastHitter.lastHitterExecuteLastHit(myHero, attackPoint)
 							FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, Input.GetWorldCursorPos())
 							return
 						else
-							if FAIO_lastHitter.lastHitInAttackAnimation(myHero, attackPoint) == true then
+							if FAIO_orbwalker.orbwalkerInAttackAnimation() == true then
 								Player.HoldPosition(Players.GetLocal(), myHero, false)
 								return
 							end
 						end
 					else
-						if FAIO_lastHitter.lastHitInAttackAnimation(myHero, attackPoint) == true then
+						if FAIO_orbwalker.orbwalkerInAttackAnimation() == true then
 							Player.HoldPosition(Players.GetLocal(), myHero, false)
 							return
 						end
@@ -370,13 +370,13 @@ function FAIO_lastHitter.lastHitterExecuteLastHit(myHero, attackPoint)
 														FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, Input.GetWorldCursorPos())
 														return
 													else
-														if FAIO_lastHitter.lastHitInAttackAnimation(myHero, attackPoint) == true then
+														if FAIO_orbwalker.orbwalkerInAttackAnimation() == true then
 															Player.HoldPosition(Players.GetLocal(), myHero, false)
 															return
 														end
 													end
 												else
-													if FAIO_lastHitter.lastHitInAttackAnimation(myHero, attackPoint) == true then
+													if FAIO_orbwalker.orbwalkerInAttackAnimation() == true then
 														Player.HoldPosition(Players.GetLocal(), myHero, false)
 														return
 													end
@@ -397,13 +397,13 @@ function FAIO_lastHitter.lastHitterExecuteLastHit(myHero, attackPoint)
 												FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, Input.GetWorldCursorPos())
 												return
 											else
-												if FAIO_lastHitter.lastHitInAttackAnimation(myHero, attackPoint) == true then
+												if FAIO_orbwalker.orbwalkerInAttackAnimation() == true then
 													Player.HoldPosition(Players.GetLocal(), myHero, false)
 													return
 												end
 											end
 										else
-											if FAIO_lastHitter.lastHitInAttackAnimation(myHero, attackPoint) == true then
+											if FAIO_orbwalker.orbwalkerInAttackAnimation() == true then
 												Player.HoldPosition(Players.GetLocal(), myHero, false)
 												return
 											end
@@ -415,13 +415,13 @@ function FAIO_lastHitter.lastHitterExecuteLastHit(myHero, attackPoint)
 											FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, Input.GetWorldCursorPos())
 											return
 										else
-											if FAIO_lastHitter.lastHitInAttackAnimation(myHero, attackPoint) == true then
+											if FAIO_orbwalker.orbwalkerInAttackAnimation() == true then
 												Player.HoldPosition(Players.GetLocal(), myHero, false)
 												return
 											end
 										end
 									else
-										if FAIO_lastHitter.lastHitInAttackAnimation(myHero, attackPoint) == true then
+										if FAIO_orbwalker.orbwalkerInAttackAnimation() == true then
 											Player.HoldPosition(Players.GetLocal(), myHero, false)
 											return
 										end
@@ -433,13 +433,13 @@ function FAIO_lastHitter.lastHitterExecuteLastHit(myHero, attackPoint)
 										FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, Input.GetWorldCursorPos())
 										return
 									else
-										if FAIO_lastHitter.lastHitInAttackAnimation(myHero, attackPoint) == true then
+										if FAIO_orbwalker.orbwalkerInAttackAnimation() == true then
 											Player.HoldPosition(Players.GetLocal(), myHero, false)
 											return
 										end
 									end
 								else
-									if FAIO_lastHitter.lastHitInAttackAnimation(myHero, attackPoint) == true then
+									if FAIO_orbwalker.orbwalkerInAttackAnimation() == true then
 										Player.HoldPosition(Players.GetLocal(), myHero, false)
 										return
 									end
@@ -452,13 +452,13 @@ function FAIO_lastHitter.lastHitterExecuteLastHit(myHero, attackPoint)
 								FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, Input.GetWorldCursorPos())
 								return
 							else
-								if FAIO_lastHitter.lastHitInAttackAnimation(myHero, attackPoint) == true then
+								if FAIO_orbwalker.orbwalkerInAttackAnimation() == true then
 									Player.HoldPosition(Players.GetLocal(), myHero, false)
 									return
 								end
 							end
 						else
-							if FAIO_lastHitter.lastHitInAttackAnimation(myHero, attackPoint) == true then
+							if FAIO_orbwalker.orbwalkerInAttackAnimation() == true then
 								Player.HoldPosition(Players.GetLocal(), myHero, false)
 								return
 							end
@@ -471,13 +471,13 @@ function FAIO_lastHitter.lastHitterExecuteLastHit(myHero, attackPoint)
 						FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION", nil, Input.GetWorldCursorPos())
 						return
 					else
-						if FAIO_lastHitter.lastHitInAttackAnimation(myHero, attackPoint) == true then
+						if FAIO_orbwalker.orbwalkerInAttackAnimation() == true then
 							Player.HoldPosition(Players.GetLocal(), myHero, false)
 							return
 						end
 					end
 				else
-					if FAIO_lastHitter.lastHitInAttackAnimation(myHero, attackPoint) == true then
+					if FAIO_orbwalker.orbwalkerInAttackAnimation() == true then
 						Player.HoldPosition(Players.GetLocal(), myHero, false)
 						return
 					end
@@ -488,7 +488,7 @@ function FAIO_lastHitter.lastHitterExecuteLastHit(myHero, attackPoint)
 			local hitTime = FAIO_utility_functions.utilityRoundNumber((lastHitTime + (Menu.GetValue(FAIO_options.optionLastHitOffset) / 20) - NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING)), 3)
 			if Entity.IsNPC(target) and Entity.IsAlive(target) and not NPC.HasState(target, Enum.ModifierState.MODIFIER_STATE_INVULNERABLE) then
 				if curTime > hitTime - FAIO_lastHitter.lastHitterTimingOffsetter(myHero, target) then
-					if not FAIO_lastHitter.lastHitInAttackAnimation(myHero, attackPoint) then
+					if FAIO_orbwalker.orbwalkerInAttackAnimation() == false then
 						if FAIO_lastHitter.lastHitterOrbSkill ~= nil and not Entity.IsSameTeam(myHero, target) and not NPC.IsTower(target) then
 							Ability.CastTarget(FAIO_lastHitter.lastHitterOrbSkill, target)
 							return
@@ -498,7 +498,7 @@ function FAIO_lastHitter.lastHitterExecuteLastHit(myHero, attackPoint)
 						end
 					end	
 				else
-					if FAIO_lastHitter.lastHitInAttackAnimation(myHero, attackPoint) == true then
+					if FAIO_orbwalker.orbwalkerInAttackAnimation() == true then
 						if (GameRules.GetGameTime() - (os.clock() - FAIO_lastHitter.AttackAnimationCreate)) + FAIO_lastHitter.lastHitterTimingOffsetter(myHero, target) < hitTime then
 							Player.HoldPosition(Players.GetLocal(), myHero, false)
 							return
@@ -782,22 +782,6 @@ function FAIO_lastHitter.myCreepDamageAdjuster(myHero, target)
 	local overallCreepDamage = minCreepDamage + bonusCreepDamage
 
 	return math.floor(overallCreepDamage)
-
-end
-
-function FAIO_lastHitter.lastHitInAttackAnimation(myHero, attackPoint)
-
-	if not myHero then return false end
-	if not attackPoint then return false end
-		if attackPoint == 0 then return false end
-
-	if os.clock() >= FAIO_lastHitter.AttackAnimationCreate - 0.035 then
-		if os.clock() <= (FAIO_lastHitter.AttackAnimationCreate + attackPoint + 0.075) then
-			return true
-		end
-	end
-
-	return false
 
 end
 

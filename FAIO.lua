@@ -1,4 +1,6 @@
 -- CHECK ORBWALKER FOR.. FORGOT THE NAME.. THIS DOUBLE ATTACK ITEM THINGY
+-- CHECK ORBWALKER MELEE
+-- FINISH DISRUPTOR
 
 --[[
 ##################################################################
@@ -1117,6 +1119,12 @@ function FAIO.OnDraw()
         	if not myHero then return end
 		if not Entity.IsAlive(myHero) then return end
 
+	if next(FAIO_heroScript) ~= nil then
+		if FAIO_heroScript.drawings ~= nil then
+			FAIO_heroScript.drawings(myHero)
+		end
+	end
+
 	if NPC.GetUnitName(myHero) == "npc_dota_hero_morphling" then
 		if Menu.IsEnabled(FAIO_options.optionHeroMorphlingKill) then
 			FAIO.drawMorphlingKillIndicator(myHero)
@@ -1213,8 +1221,8 @@ function FAIO.OnPrepareUnitOrders(orders)
 		if orders.order == Enum.UnitOrder.DOTA_UNIT_ORDER_CAST_TARGET then
 			if orders.target ~= nil and Entity.IsHero(orders.target) and not Entity.IsSameTeam(myHero, orders.target) then
 				if NPC.IsLinkensProtected(orders.target) then
-					if FAIO.LinkensBreakerNew(myHero) ~= nil then
-						Ability.CastTarget(NPC.GetItem(myHero, FAIO.LinkensBreakerNew(myHero), true), orders.target)
+					if FAIO_itemHandler.LinkensBreakerNew(myHero) ~= nil then
+						Ability.CastTarget(NPC.GetItem(myHero, FAIO_itemHandler.LinkensBreakerNew(myHero), true), orders.target)
 						return true
 					end
 				end
@@ -4931,8 +4939,8 @@ function FAIO.SFCombo(myHero, enemy)
 						end
 					else
 						if NPC.IsLinkensProtected(enemy) then
-							if FAIO_itemHandler.ItemSleepReady(0.05) and FAIO.LinkensBreakerNew(myHero) ~= nil then
-								Ability.CastTarget(NPC.GetItem(myHero, FAIO.LinkensBreakerNew(myHero), true), enemy)
+							if FAIO_itemHandler.ItemSleepReady(0.05) and FAIO_itemHandler.LinkensBreakerNew(myHero) ~= nil then
+								Ability.CastTarget(NPC.GetItem(myHero, FAIO_itemHandler.LinkensBreakerNew(myHero), true), enemy)
 								return
 							end
 						end
@@ -7102,8 +7110,8 @@ function FAIO.LegionCombo(myHero, enemy)
 							return
 						end
 						if NPC.IsLinkensProtected(enemy) then
-							if FAIO.LinkensBreakerNew(myHero) ~= nil then
-								Ability.CastTarget(NPC.GetItem(myHero, FAIO.LinkensBreakerNew(myHero), true), enemy)
+							if FAIO_itemHandler.LinkensBreakerNew(myHero) ~= nil then
+								Ability.CastTarget(NPC.GetItem(myHero, FAIO_itemHandler.LinkensBreakerNew(myHero), true), enemy)
 								return
 							end
 						end
@@ -7227,8 +7235,8 @@ function FAIO.SlardarCombo(myHero, enemy)
 					return
 				end
 				if FAIO.SleepReady(0.3) and NPC.IsLinkensProtected(enemy) then
-					if FAIO.LinkensBreakerNew(myHero) ~= nil then
-						Ability.CastTarget(NPC.GetItem(myHero, FAIO.LinkensBreakerNew(myHero), true), enemy)
+					if FAIO_itemHandler.LinkensBreakerNew(myHero) ~= nil then
+						Ability.CastTarget(NPC.GetItem(myHero, FAIO_itemHandler.LinkensBreakerNew(myHero), true), enemy)
 						return
 					end
 				end
@@ -7517,8 +7525,8 @@ function FAIO.SvenCombo(myHero, enemy)
 			if not (NPC.HasModifier(myHero, "modifier_item_invisibility_edge_windwalk") or NPC.HasModifier(myHero, "modifier_item_silver_edge_windwalk")) then
 				
 				if NPC.IsLinkensProtected(enemy) then
-					if FAIO.LinkensBreakerNew(myHero) ~= nil then
-						Ability.CastTarget(NPC.GetItem(myHero, FAIO.LinkensBreakerNew(myHero), true), enemy)
+					if FAIO_itemHandler.LinkensBreakerNew(myHero) ~= nil then
+						Ability.CastTarget(NPC.GetItem(myHero, FAIO_itemHandler.LinkensBreakerNew(myHero), true), enemy)
 						return
 					end
 				end

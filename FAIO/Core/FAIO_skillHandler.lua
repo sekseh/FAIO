@@ -70,11 +70,11 @@ function FAIO_skillHandler.skillIsCastable(skill, castRange, target, position, l
 			if Ability.GetImmunityType(skill) & Enum.ImmunityTypes.SPELL_IMMUNITY_ENEMIES_YES ~= 0 then
 				piercesSpellImmunity = true
 			end
-			if not piercesSpellImmunity then
-				if Ability.GetDamageType(skill) & Enum.DamageTypes.DAMAGE_TYPE_MAGICAL == 0 then
-					piercesSpellImmunity = true
-				end
-			end
+		--	if not piercesSpellImmunity then
+		--		if Ability.GetDamageType(skill) & Enum.DamageTypes.DAMAGE_TYPE_MAGICAL == 0 then
+		--			piercesSpellImmunity = true
+		--		end
+		--	end
 		else
 			if Ability.GetImmunityType(skill) & Enum.ImmunityTypes.SPELL_IMMUNITY_ALLIES_YES ~= 0 then
 				piercesSpellImmunity = true
@@ -90,10 +90,8 @@ function FAIO_skillHandler.skillIsCastable(skill, castRange, target, position, l
 			elseif linkensCheck and NPC.HasItem(target, "item_ultimate_scepter", true) and NPC.HasModifier(target, "modifier_antimage_spell_shield") and Ability.IsReady(NPC.GetAbility(target, "antimage_spell_shield")) then
 				targetable = false
 			else
-				if Ability.GetDamageType(skill) & Enum.DamageTypes.DAMAGE_TYPE_MAGICAL ~= 0 then
-					if NPC.HasState(target, Enum.ModifierState.MODIFIER_STATE_MAGIC_IMMUNE) and not piercesSpellImmunity then
-						targetable = false
-					end
+				if NPC.HasState(target, Enum.ModifierState.MODIFIER_STATE_MAGIC_IMMUNE) and not piercesSpellImmunity then
+					targetable = false
 				end
 			end
 			if not NPC.IsEntityInRange(myHero, target, castRange) then

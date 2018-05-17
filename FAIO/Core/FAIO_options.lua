@@ -524,6 +524,13 @@ FAIO_options.optionHeroTinkerMiscFailRockets = Menu.AddOption({ ".FAIO", "3. Her
 FAIO_options.optionHeroTinkerMiscGlimmer = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "3. Intelligence heroes", "Tinker", "6. Misc options" }, "3. Auto glimmer {{tinker misc}}", "will auto cast glimmer in rocket and farm mode")
 FAIO_options.optionHeroTinkerMiscBlink = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "3. Intelligence heroes", "Tinker", "6. Misc options" }, "4. Auto blink after rearm {{tinker misc}}", "will auto use blink in facing direction if in danger and manually casted rearm")
 
+FAIO_options.optionHeroDisruptor = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "3. Intelligence heroes", "Disruptor" }, "1. Disruptor Combo", "")
+FAIO_options.optionHeroDisruptorComboIndicator = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "3. Intelligence heroes", "Disruptor" }, "4. Draw combo indicator", "will draw skill images if glimpse-field or glimpse-storm-field combo is possible")
+FAIO_options.optionHeroDisruptorGlimpseParticle = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "3. Intelligence heroes", "Disruptor" }, "5. Draw glimpse position", "")
+
+
+
+
 FAIO_options.preemptiveBKB = {}
 for i = 1, #FAIO_options.preemptiveBKBtable do
 	FAIO_options.preemptiveBKB[i] = Menu.AddOption({ ".FAIO", "2. Item Usage", "2. Defensive Items", "1. BKB", "3. dangerous disables" }, FAIO_options.preemptiveBKBtable[i], "")
