@@ -55,12 +55,12 @@ function FAIO_skillHandler.skillIsCastable(skill, castRange, target, position, l
 			return false
 		end
 
-	if FAIO_skillHandler.heroCanCastItems(myHero) == false then
+	if FAIO_utility_functions.heroCanCastItems(myHero) == false then
 		return false
 	end
 
 	if Ability.GetBehavior(skill) & Enum.AbilityBehavior.DOTA_ABILITY_BEHAVIOR_ITEM == 0 then
-		if FAIO_skillHandler.heroCanCastSpells(myHero, target) == false then
+		if FAIO_utility_functions.heroCanCastSpells(myHero, target) == false then
 			return false
 		end
 	end
@@ -183,7 +183,7 @@ function FAIO_skillHandler.executeSkillOrder(skill, target, position)
 
 		local mousePos = Input.GetWorldCursorPos()
 		local humanizerAdjustment = FAIO_skillHandler.humanizerMouseDelayCalc(pos)
-		local turnAdjustment = FAIO_skillHandler.TimeToFacePosition(myHero, pos)
+		local turnAdjustment = FAIO_utility_functions.TimeToFacePosition(myHero, pos)
 
 		Ability.CastPosition(skill, pos)
 		FAIO_skillHandler.mainTick = os.clock() + 0.055 + NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) + humanizerAdjustment + turnAdjustment

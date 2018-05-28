@@ -54,7 +54,7 @@ function FAIO_drow_ranger.comboExecute(myHero, enemy, myMana)
 			local pred = 0.25 + ((Entity.GetAbsOrigin(myHero) - Entity.GetAbsOrigin(enemy)):Length2D() / 2000) + (NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) * 2)
 			local predPos = FAIO_utility_functions.castPrediction(myHero, enemy, pred)
 			if FAIO_skillHandler.skillIsCastable(W, Ability.GetCastRange(W), enemy, predPos, false) then
-				if not NPC.IsSilenced(enemy) and FAIO_drow_ranger.TargetDisableTimer(myHero, enemy) <= 0 then
+				if not NPC.IsSilenced(enemy) and FAIO_utility_functions.TargetDisableTimer(myHero, enemy) <= 0 then
 					FAIO_skillHandler.executeSkillOrder(W, enemy, predPos)
 					FAIO_itemHandler.lastDefItemPop = os.clock()
 					return
@@ -123,7 +123,7 @@ function FAIO_drow_ranger.comboExecute(myHero, enemy, myMana)
 				local pred = 0.25 + ((Entity.GetAbsOrigin(myHero) - Entity.GetAbsOrigin(target)):Length2D() / 2000) + (NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) * 2)
 				local predPos = FAIO_utility_functions.castPrediction(myHero, target, pred)
 				if FAIO_skillHandler.skillIsCastable(W, Ability.GetCastRange(W), target, predPos, false) then
-					if not NPC.IsSilenced(target) and FAIO_drow_ranger.TargetDisableTimer(myHero, target) == 0 then
+					if not NPC.IsSilenced(target) and FAIO_utility_functions.TargetDisableTimer(myHero, target) == 0 then
 						FAIO_skillHandler.executeSkillOrder(W, enemy, predPos)
 						FAIO_itemHandler.lastDefItemPop = os.clock()
 						return
@@ -145,9 +145,9 @@ function FAIO_drow_ranger.DrowAutoHarass(myHero, myMana)
 	if not Q then return end
 		if Ability.GetLevel(Q) < 1 then return end
 
-	if FAIO_drow_ranger.heroCanCastSpells(myHero, enemy) == false then return end
-	if FAIO_drow_ranger.isHeroChannelling(myHero) == true then return end 
-	if FAIO_drow_ranger.IsHeroInvisible(myHero) == true then return end
+	if FAIO_utility_functions.heroCanCastSpells(myHero, enemy) == false then return end
+	if FAIO_utility_functions.isHeroChannelling(myHero) == true then return end 
+	if FAIO_utility_functions.IsHeroInvisible(myHero) == true then return end
 
 	local harassTarget = nil
 		for _, hero in ipairs(NPC.GetHeroesInRadius(myHero, NPC.GetAttackRange(myHero), Enum.TeamType.TEAM_ENEMY)) do

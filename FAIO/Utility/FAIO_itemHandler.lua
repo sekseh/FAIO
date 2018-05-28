@@ -358,9 +358,9 @@ function FAIO_itemHandler.itemUsage(myHero, enemy)
 	if (os.clock() - FAIO_itemHandler.lastItemTick) < FAIO_itemHandler.itemDelay then return end
 	if FAIO_itemHandler.ItemCastStop then return end
 
-	if FAIO_itemHandler.heroCanCastItems(myHero) == false then return end
-	if FAIO_itemHandler.isHeroChannelling(myHero) == true then return end
-	if FAIO_itemHandler.IsHeroInvisible(myHero) == true then return end
+	if FAIO_utility_functions.heroCanCastItems(myHero) == false then return end
+	if FAIO_utility_functions.isHeroChannelling(myHero) == true then return end
+	if FAIO_utility_functions.IsHeroInvisible(myHero) == true then return end
 
 	if Menu.GetValue(FAIO_options.optionItemStyle) == 0 then 
 		FAIO_itemHandler.itemUsageNoOrder(myHero, enemy)
@@ -786,9 +786,9 @@ function FAIO_itemHandler.itemUsageSmartOrder(myHero, enemy, activation)
 	if not myHero then return end
 	if not enemy then return end
 
-	if FAIO_itemHandler.heroCanCastItems(myHero) == false then return end
-	if FAIO_itemHandler.isHeroChannelling(myHero) == true then return end
-	if FAIO_itemHandler.IsHeroInvisible(myHero) == true then return end
+	if FAIO_utility_functions.heroCanCastItems(myHero) == false then return end
+	if FAIO_utility_functions.isHeroChannelling(myHero) == true then return end
+	if FAIO_utility_functions.IsHeroInvisible(myHero) == true then return end
 
 	local alternateActivation
 	if activation == nil then
@@ -1141,9 +1141,9 @@ function FAIO_itemHandler.ItemAutoHurricaneUsage(myHero, enemy)
 		if not hurricanePike then return end
 		if not Ability.IsCastable(hurricanePike, myMana) then return end
 
-	if FAIO_itemHandler.heroCanCastItems(myHero) == false then return end
-	if FAIO_itemHandler.isHeroChannelling(myHero) == true then return end
-	if FAIO_itemHandler.IsHeroInvisible(myHero) == true then return end
+	if FAIO_utility_functions.heroCanCastItems(myHero) == false then return end
+	if FAIO_utility_functions.isHeroChannelling(myHero) == true then return end
+	if FAIO_utility_functions.IsHeroInvisible(myHero) == true then return end
 
 	if NPC.HasModifier(myHero, "modifier_item_blade_mail_reflect") then return end
 	if NPC.HasItem(myHero, "item_blade_mail", true) and Ability.SecondsSinceLastUse(NPC.GetItem(myHero, "item_blade_mail", true)) > -1 and Ability.SecondsSinceLastUse(NPC.GetItem(myHero, "item_blade_mail", true)) < 0.25 then return end
@@ -1225,9 +1225,9 @@ function FAIO_itemHandler.ItemAutoBMUsage(myHero)
 		if not bladeMail then return end
 		if not Ability.IsCastable(bladeMail, myMana) then return end
 
-	if FAIO_itemHandler.heroCanCastItems(myHero) == false then return end
-	if FAIO_itemHandler.isHeroChannelling(myHero) == true then return end
-	if FAIO_itemHandler.IsHeroInvisible(myHero) == true then return end
+	if FAIO_utility_functions.heroCanCastItems(myHero) == false then return end
+	if FAIO_utility_functions.isHeroChannelling(myHero) == true then return end
+	if FAIO_utility_functions.IsHeroInvisible(myHero) == true then return end
 
 	if NPC.HasModifier(myHero, "modifier_item_hurricane_pike_range") then return end
 	if NPC.HasItem(myHero, "item_hurricane_pike", true) and Ability.SecondsSinceLastUse(NPC.GetItem(myHero, "item_hurricane_pike", true)) > -1 and Ability.SecondsSinceLastUse(NPC.GetItem(myHero, "item_hurricane_pike", true)) < 0.25 then return end
@@ -1860,8 +1860,8 @@ function FAIO_itemHandler.armletHandler(myHero)
 		end
 	end
 
-	if FAIO_itemHandler.heroCanCastItems(myHero) == false then return end
-	if FAIO_itemHandler.IsHeroInvisible(myHero) == true then return end
+	if FAIO_utility_functions.heroCanCastItems(myHero) == false then return end
+	if FAIO_utility_functions.IsHeroInvisible(myHero) == true then return end
 
 	if os.clock() < FAIO_itemHandler.armletToggleTime then return end
 
@@ -1916,9 +1916,9 @@ function FAIO_itemHandler.utilityItemUsage(myHero)
 
 	if not myHero then return end
 
-	if FAIO_itemHandler.heroCanCastItems(myHero) == false then return end
-	if FAIO_itemHandler.isHeroChannelling(myHero) == true then return end
-	if FAIO_itemHandler.IsHeroInvisible(myHero) == true then return end
+	if FAIO_utility_functions.heroCanCastItems(myHero) == false then return end
+	if FAIO_utility_functions.isHeroChannelling(myHero) == true then return end
+	if FAIO_utility_functions.IsHeroInvisible(myHero) == true then return end
 
 	local stick = NPC.GetItem(myHero, "item_magic_stick", true)
 	local wand = NPC.GetItem(myHero, "item_magic_wand", true)
@@ -2150,9 +2150,9 @@ function FAIO_itemHandler.utilityItemMidas(myHero, midas)
 	if not midas then return end
 	if not Ability.IsReady(midas) then return end
 
-	if FAIO_itemHandler.heroCanCastItems(myHero) == false then return end
-	if FAIO_itemHandler.isHeroChannelling(myHero) == true then return end
-	if FAIO_itemHandler.IsHeroInvisible(myHero) == true then return end
+	if FAIO_utility_functions.heroCanCastItems(myHero) == false then return end
+	if FAIO_utility_functions.isHeroChannelling(myHero) == true then return end
+	if FAIO_utility_functions.IsHeroInvisible(myHero) == true then return end
 
 	if NPC.HasModifier(myHero, "modifier_spirit_breaker_charge_of_darkness") then return end
 
@@ -2191,8 +2191,8 @@ function FAIO_itemHandler.useDefensiveItems(myHero, enemy)
 
 	if FAIO_itemHandler.ItemCastStop then return end
 
-	if FAIO_itemHandler.heroCanCastItems(myHero) == false then return end
-	if FAIO_itemHandler.IsHeroInvisible(myHero) == true then return end
+	if FAIO_utility_functions.heroCanCastItems(myHero) == false then return end
+	if FAIO_utility_functions.IsHeroInvisible(myHero) == true then return end
 
 	local myMana = NPC.GetMana(myHero)
 
@@ -2221,7 +2221,7 @@ function FAIO_itemHandler.useDefensiveItems(myHero, enemy)
 
 	if Menu.IsEnabled(FAIO_options.optionDefensiveItemsGlimmer) then
 		if glimmerCape and Ability.IsCastable(glimmerCape, myMana) then
-			if FAIO_itemHandler.IsNPCinDanger(myHero, myHero) then
+			if FAIO_utility_functions.IsNPCinDanger(myHero, myHero) then
 				Ability.CastTarget(glimmerCape, myHero)
 				FAIO_itemHandler.lastDefItemPop = os.clock()
 				return
@@ -2247,7 +2247,7 @@ function FAIO_itemHandler.useDefensiveItems(myHero, enemy)
 				local teamMatesAround = NPC.GetHeroesInRadius(myHero, 1000, Enum.TeamType.TEAM_FRIEND)
 				for _, ally in ipairs(teamMatesAround) do
 					if ally and not NPC.IsIllusion(ally) and Entity.IsAlive(ally) then
-						if FAIO_itemHandler.IsNPCinDanger(myHero, ally) then
+						if FAIO_utility_functions.IsNPCinDanger(myHero, ally) then
 							Ability.CastTarget(glimmerCape, ally)
 							FAIO_itemHandler.lastDefItemPop = os.clock()
 							break
@@ -2268,7 +2268,7 @@ function FAIO_itemHandler.useDefensiveItems(myHero, enemy)
 		end
 	end
 
-	if FAIO_itemHandler.isHeroChannelling(myHero) == true then return end
+	if FAIO_utility_functions.isHeroChannelling(myHero) == true then return end
 
 	if Menu.IsEnabled(FAIO_options.optionDefensiveItemsGhost) then
 		if ghost and Ability.IsReady(ghost) then
@@ -2293,7 +2293,7 @@ function FAIO_itemHandler.useDefensiveItems(myHero, enemy)
 				
 	if Menu.IsEnabled(FAIO_options.optionDefensiveItemslotusOrb) then
 		if lotusOrb and Ability.IsCastable(lotusOrb, myMana) then
-			if FAIO_itemHandler.IsNPCinDanger(myHero, myHero) then
+			if FAIO_utility_functions.IsNPCinDanger(myHero, myHero) then
 				Ability.CastTarget(lotusOrb, myHero)
 				FAIO_itemHandler.lastDefItemPop = os.clock()
 				return
@@ -2302,7 +2302,7 @@ function FAIO_itemHandler.useDefensiveItems(myHero, enemy)
 				local teamMatesAround = NPC.GetHeroesInRadius(myHero, 875, Enum.TeamType.TEAM_FRIEND)
 				for _, ally in ipairs(teamMatesAround) do
 					if ally and not NPC.IsIllusion(ally) and Entity.IsAlive(ally) then
-						if FAIO_itemHandler.IsNPCinDanger(myHero, ally) then
+						if FAIO_utility_functions.IsNPCinDanger(myHero, ally) then
 							Ability.CastTarget(lotusOrb, ally)
 							FAIO_itemHandler.lastDefItemPop = os.clock()
 							break
@@ -2316,7 +2316,7 @@ function FAIO_itemHandler.useDefensiveItems(myHero, enemy)
 	
 	if Menu.IsEnabled(FAIO_options.optionDefensiveItemsCrimson) then
 		if crimsonGuard and Ability.IsCastable(crimsonGuard, myMana) then
-			if FAIO_itemHandler.IsNPCinDanger(myHero, myHero) then
+			if FAIO_utility_functions.IsNPCinDanger(myHero, myHero) then
 				Ability.CastNoTarget(crimsonGuard)
 				FAIO_itemHandler.lastDefItemPop = os.clock()
 				return
@@ -2324,7 +2324,7 @@ function FAIO_itemHandler.useDefensiveItems(myHero, enemy)
 			local teamMatesAround = NPC.GetHeroesInRadius(myHero, 875, Enum.TeamType.TEAM_FRIEND)
 			for _, ally in ipairs(teamMatesAround) do
 				if ally and not NPC.IsIllusion(ally) and Entity.IsAlive(ally) then
-					if FAIO_itemHandler.IsNPCinDanger(myHero, ally) then
+					if FAIO_utility_functions.IsNPCinDanger(myHero, ally) then
 						Ability.CastNoTarget(crimsonGuard)
 						FAIO_itemHandler.lastDefItemPop = os.clock()
 						break
@@ -2341,7 +2341,7 @@ function FAIO_itemHandler.useDefensiveItems(myHero, enemy)
 				local teamMatesAround = NPC.GetHeroesInRadius(myHero, 975, Enum.TeamType.TEAM_FRIEND)
 				for _, ally in ipairs(teamMatesAround) do
 					if ally and not NPC.IsIllusion(ally) and Entity.IsAlive(ally) then
-						if FAIO_itemHandler.IsNPCinDanger(myHero, ally) then
+						if FAIO_utility_functions.IsNPCinDanger(myHero, ally) then
 							Ability.CastTarget(solarCrest, ally)
 							FAIO_itemHandler.lastDefItemPop = os.clock()
 							break
@@ -2359,7 +2359,7 @@ function FAIO_itemHandler.useDefensiveItems(myHero, enemy)
 				local teamMatesAround = NPC.GetHeroesInRadius(myHero, 975, Enum.TeamType.TEAM_FRIEND)
 				for _, ally in ipairs(teamMatesAround) do
 					if ally and not NPC.IsIllusion(ally) and Entity.IsAlive(ally) then
-						if FAIO_itemHandler.IsNPCinDanger(myHero, ally) then
+						if FAIO_utility_functions.IsNPCinDanger(myHero, ally) then
 							Ability.CastTarget(medallion, ally)
 							FAIO_itemHandler.lastDefItemPop = os.clock()
 							break
@@ -2373,7 +2373,7 @@ function FAIO_itemHandler.useDefensiveItems(myHero, enemy)
 
 	if Menu.IsEnabled(FAIO_options.optionDefensiveItemsPipe) then
 		if pipe and Ability.IsCastable(pipe, myMana) then
-			if FAIO_itemHandler.IsNPCinDanger(myHero, myHero) then
+			if FAIO_utility_functions.IsNPCinDanger(myHero, myHero) then
 				Ability.CastNoTarget(pipe)
 				FAIO_itemHandler.lastDefItemPop = os.clock()
 				return
@@ -2381,7 +2381,7 @@ function FAIO_itemHandler.useDefensiveItems(myHero, enemy)
 			local teamMatesAround = NPC.GetHeroesInRadius(myHero, 875, Enum.TeamType.TEAM_FRIEND)
 			for _, ally in ipairs(teamMatesAround) do
 				if ally and not NPC.IsIllusion(ally) and Entity.IsAlive(ally) then
-					if FAIO_itemHandler.IsNPCinDanger(myHero, ally) then
+					if FAIO_utility_functions.IsNPCinDanger(myHero, ally) then
 						Ability.CastNoTarget(pipe)
 						FAIO_itemHandler.lastDefItemPop = os.clock()
 						break
@@ -2394,7 +2394,7 @@ function FAIO_itemHandler.useDefensiveItems(myHero, enemy)
 
 	if Menu.IsEnabled(FAIO_options.optionDefensiveItemsBKB) then
 		if BKB and Ability.IsReady(BKB) then
-			if FAIO_itemHandler.shouldCastBKB(myHero) == true then
+			if FAIO_utility_functions.shouldCastBKB(myHero) == true then
 				Ability.CastNoTarget(BKB)
 				FAIO_itemHandler.lastDefItemPop = os.clock()
 				return
@@ -2404,7 +2404,7 @@ function FAIO_itemHandler.useDefensiveItems(myHero, enemy)
 	
 	if Menu.IsEnabled(FAIO_options.optionDefensiveItemsSatanic) then
 		if satanic and Ability.IsCastable(satanic, myMana) then			
-			if FAIO_itemHandler.shouldCastSatanic(myHero, enemy) == true then
+			if FAIO_utility_functions.shouldCastSatanic(myHero, enemy) == true then
 				Ability.CastNoTarget(satanic)
 				FAIO_itemHandler.lastDefItemPop = os.clock()
 				return

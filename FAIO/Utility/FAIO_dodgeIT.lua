@@ -588,7 +588,7 @@ function FAIO_dodgeIT.dodger(myHero)
 	FAIO_dodgeIT.dodgerProjectileTimingAdjuster(myHero)
 	local curTime = GameRules.GetGameTime()
 
-	if not FAIO_dodgeIT.heroCanCastItems(myHero) then
+	if not FAIO_utility_functions.heroCanCastItems(myHero) then
 		return
 	end
 
@@ -1551,7 +1551,7 @@ function FAIO_dodgeIT.dodgeProcessing(myHero, unit, activity, castpoint)
 		end
 
 		if activity == Enum.GameActivity.ACT_DOTA_CAST_ABILITY_5 then
-			if FAIO_dodgeIT.IsHeroInvisible(myHero) == false and not NPC.HasModifier(myHero, "modifier_smoke_of_deceit") then
+			if FAIO_utility_functions.IsHeroInvisible(myHero) == false and not NPC.HasModifier(myHero, "modifier_smoke_of_deceit") then
 				FAIO_dodgeIT.dodgeIt({time = GameRules.GetGameTime(); delay = castpoint; style = 1; source = unit, lotus = 0, castpoint = castpoint, spellname = "zuus_thundergods_wrath", global = 1, type = "nuke"})
 			end
 		end

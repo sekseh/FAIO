@@ -5,7 +5,50 @@ FAIO_attackHandler.mainTick = 0
 
 function FAIO_attackHandler.resetter()
 
-	if not Menu.IsKeyDown(FAIO_options.optionComboKey) then
+	local keys = {
+		FAIO_options.optionComboKey,
+		FAIO_options.optionLastHitKey,
+		FAIO_options.optionHeroMagnusSkewerComboKey,
+		FAIO_options.optionHeroMagnuscomboKeyAltSkewer,
+		FAIO_options.optionHeroMagnuscomboKeyAltRP,
+		FAIO_options.optionHeroHuskarHarassKey,
+		FAIO_options.optionHeroTimberPanicKey,
+		FAIO_options.optionHeroTimberFastMoveKey,
+		FAIO_options.optionHeroKunkkaShipKey,
+		FAIO_options.optionHeroPudgeHookKey,
+		FAIO_options.optionHeroTAHarassKey,
+		FAIO_options.optionHeroClinkzHarassKey,
+		FAIO_options.optionArcWardenTempestKey,
+		FAIO_options.optionArcWardenPushKey,
+		FAIO_options.optionHeroSFEulCombo,
+		FAIO_options.optionHeroViperHarassKey,
+		FAIO_options.optionHeroDrowHarassKey,
+		FAIO_options.optionHeroSkyHarassKey,
+		FAIO_options.optionHeroSilencerHarassKey,
+		FAIO_options.optionHeroVisageInstStunKey,
+		FAIO_options.optionHeroVisagePanicKey,
+		FAIO_options.optionHeroPuckPanicKey,
+		FAIO_options.optionHeroInvokerIcewallKey,
+		FAIO_options.optionHeroInvokerAlacrityKey,
+		FAIO_options.optionHeroInvokerTornadoKey,
+		FAIO_options.optionHeroZuusFarmKey,
+		FAIO_options.optionHeroZuusHarassKey,
+		FAIO_options.optionHeroCMUltKey,
+		FAIO_options.optionHeroTinkerPushKey,
+		FAIO_options.optionHeroTinkerRocketKey,
+		FAIO_options.optionHeroDisruptorGlimpseComboKey,
+		FAIO_options.optionHeroDisruptorUltComboKey
+			}
+
+	local check = false
+
+	for _, v in ipairs(keys) do
+		if Menu.IsKeyDown(v) then
+			check = true
+		end
+	end
+
+	if not check then
 		if next(FAIO_attackHandler.actionTable) ~= nil then
 			FAIO_attackHandler.actionTable = {}
 			FAIO_attackHandler.mainTick = 0
@@ -109,8 +152,8 @@ function FAIO_attackHandler.GenericMainAttack(npc, attackType, target, position)
 
 	FAIO_attackHandler.createActionTable(npc)
 
-	if FAIO_attackHandler.isHeroChannelling(npc) == true then return end
-	if FAIO_attackHandler.heroCanCastItems(npc) == false then return end
+	if FAIO_utility_functions.isHeroChannelling(npc) == true then return end
+	if FAIO_utility_functions.heroCanCastItems(npc) == false then return end
 	if FAIO_utility_functions.inSkillAnimation(npc) == true then return end
 
 	if Menu.IsEnabled(FAIO_options.optionOrbwalkEnable) then

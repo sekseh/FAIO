@@ -543,7 +543,7 @@ function FAIO_lastHitter.lastHitterGetOrbSkill(myHero)
 				orbSkill = nil
 			elseif (NPC.GetMana(myHero) / NPC.GetMaxMana(myHero)) * 100 < Menu.GetValue(FAIO_options.optionLastHitOrbMana) then
 				orbSkill = nil
-			elseif FAIO_lastHitter.heroCanCastSpells(myHero, target) == false then
+			elseif FAIO_utility_functions.heroCanCastSpells(myHero, target) == false then
 				orbSkill = nil
 			elseif not Ability.IsReady(orbSkill) then
 				orbSkill = nil
@@ -588,7 +588,7 @@ function FAIO_lastHitter.lastHitterGetOrbSkillHarass(myHero)
 				orbSkill = nil
 			elseif (NPC.GetMana(myHero) / NPC.GetMaxMana(myHero)) * 100 < Menu.GetValue(FAIO_options.optionLastHitOrbMana) then
 				orbSkill = nil
-			elseif FAIO_lastHitter.heroCanCastSpells(myHero, target) == false then
+			elseif FAIO_utility_functions.heroCanCastSpells(myHero, target) == false then
 				orbSkill = nil
 			elseif not Ability.IsReady(orbSkill) then
 				orbSkill = nil

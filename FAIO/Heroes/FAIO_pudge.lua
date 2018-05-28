@@ -198,7 +198,7 @@ end
 
 function FAIO_pudge.comboExecute(myHero, enemy, myMana, maxInitRange)
 
-	if FAIO_pudge.heroCanCastSpells(myHero, enemy) == true then
+	if FAIO_utility_functions.heroCanCastSpells(myHero, enemy) == true then
 
 		if maxInitRange > 1200 then
 			if not NPC.IsEntityInRange(myHero, enemy, 1200) then
@@ -272,7 +272,7 @@ function FAIO_pudge.comboExecute(myHero, enemy, myMana, maxInitRange)
 			if FAIO_skillHandler.skillIsCastable(Q, Menu.GetValue(FAIO_options.optionHeroPudgeHookComboMaxRange), enemy, hookPredictedPos, false) and not NPC.IsChannellingAbility(myHero) then
 				if FAIO_pudge.PudgeHookCollisionChecker(myHero, enemy) and not FAIO_pudge.PudgeHookJukingChecker(myHero, enemy) then
 					FAIO_skillHandler.executeSkillOrder(Q, enemy, hookPredictedPos)
-					FAIO_pudge.PudgeHookStartTimer = os.clock() + NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) + FAIO_pudge.TimeToFacePosition(myHero, hookPredictedPos) + FAIO_pudge.humanizerMouseDelayCalc(hookPredictedPos)
+					FAIO_pudge.PudgeHookStartTimer = os.clock() + NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) + FAIO_utility_functions.TimeToFacePosition(myHero, hookPredictedPos) + FAIO_pudge.humanizerMouseDelayCalc(hookPredictedPos)
 					FAIO_pudge.PudgeHookTargetedPos = hookPredictedPos
 					return
 				end
@@ -344,7 +344,7 @@ function FAIO_pudge.hookComboExecute(myHero, myMana, npc)
 					local hookTiming = Ability.GetCastPoint(Q) + NPC.GetTimeToFace(myHero, npc) + ((Entity.GetAbsOrigin(npc):__sub(Entity.GetAbsOrigin(myHero)):Length2D() - 125) / 1450) + FAIO_pudge.humanizerMouseDelayCalc(Entity.GetAbsOrigin(npc)) + NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING)
 					if GameRules.GetGameTime() > modTiming - hookTiming then
 						FAIO_skillHandler.executeSkillOrder(Q, npc, Entity.GetAbsOrigin(npc))
-						FAIO_pudge.PudgeHookStartTimer = os.clock() + NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) + FAIO_pudge.TimeToFacePosition(myHero, predPos) + FAIO_pudge.humanizerMouseDelayCalc(predPos)
+						FAIO_pudge.PudgeHookStartTimer = os.clock() + NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) + FAIO_utility_functions.TimeToFacePosition(myHero, predPos) + FAIO_pudge.humanizerMouseDelayCalc(predPos)
 						return	
 					end
 				else
@@ -357,12 +357,12 @@ function FAIO_pudge.hookComboExecute(myHero, myMana, npc)
 							local atosTiming = GameRules.GetGameTime() - math.max(Ability.SecondsSinceLastUse(atos), 0) + ((Entity.GetAbsOrigin(myHero) - Entity.GetAbsOrigin(npc)):Length2D() / 1500) + NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) - 0.1
 							if GameRules.GetGameTime() >= atosTiming then
 								FAIO_skillHandler.executeSkillOrder(Q, npc, Entity.GetAbsOrigin(npc))
-								FAIO_pudge.PudgeHookStartTimer = os.clock() + NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) + FAIO_pudge.TimeToFacePosition(myHero, predPos) + FAIO_pudge.humanizerMouseDelayCalc(Entity.GetAbsOrigin(npc))
+								FAIO_pudge.PudgeHookStartTimer = os.clock() + NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) + FAIO_utility_functions.TimeToFacePosition(myHero, predPos) + FAIO_pudge.humanizerMouseDelayCalc(Entity.GetAbsOrigin(npc))
 								return
 							end	
 						else
 							FAIO_skillHandler.executeSkillOrder(Q, npc, predPos)
-							FAIO_pudge.PudgeHookStartTimer = os.clock() + NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) + FAIO_pudge.TimeToFacePosition(myHero, predPos) + FAIO_pudge.humanizerMouseDelayCalc(predPos)
+							FAIO_pudge.PudgeHookStartTimer = os.clock() + NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) + FAIO_utility_functions.TimeToFacePosition(myHero, predPos) + FAIO_pudge.humanizerMouseDelayCalc(predPos)
 							FAIO_pudge.PudgeHookTargetedPos = predPos
 							return
 						end
@@ -375,7 +375,7 @@ function FAIO_pudge.hookComboExecute(myHero, myMana, npc)
 					Ability.CastTarget(NPC.GetItem(myHero, "item_force_staff", true), npc)
 					FAIO_pudge.PudgeHookTarget = npc
 					FAIO_skillHandler.executeSkillOrder(Q, npc, targetForcedPos)
-					FAIO_pudge.PudgeHookStartTimer = os.clock() + NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) + FAIO_pudge.TimeToFacePosition(myHero, targetForcedPos) + FAIO_pudge.humanizerMouseDelayCalc(predPos)
+					FAIO_pudge.PudgeHookStartTimer = os.clock() + NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) + FAIO_utility_functions.TimeToFacePosition(myHero, targetForcedPos) + FAIO_pudge.humanizerMouseDelayCalc(predPos)
 					return	
 				end
 							
@@ -393,9 +393,9 @@ function FAIO_pudge.PudgeAutoSuicide(myHero, myMana, rot)
 	if not myHero then return end
 	if not rot then return end
 
-	if FAIO_pudge.heroCanCastItems(myHero) == false then return end
-	if FAIO_pudge.isHeroChannelling(myHero) == true then return end
-	if FAIO_pudge.IsHeroInvisible(myHero) == true then return end
+	if FAIO_utility_functions.heroCanCastItems(myHero) == false then return end
+	if FAIO_utility_functions.isHeroChannelling(myHero) == true then return end
+	if FAIO_utility_functions.IsHeroInvisible(myHero) == true then return end
 
 	if os.clock() < FAIO_pudge.PudgeRotFarmToggledTime then return end
 
@@ -411,7 +411,7 @@ function FAIO_pudge.PudgeAutoSuicide(myHero, myMana, rot)
 	rotDamage = ((1 - NPC.GetMagicalArmorValue(myHero)) * rotDamage + rotDamage * (Hero.GetIntellectTotal(myHero) / 14 / 100)) / 4
 
 	local soulRing = NPC.GetItem(myHero, "item_soul_ring", true)
-		if soulRing and Ability.IsReady(soulRing) and FAIO_pudge.heroCanCastItems(myHero) then
+		if soulRing and Ability.IsReady(soulRing) and FAIO_utility_functions.heroCanCastItems(myHero) then
 			rotDamage = rotDamage + 150
 		end
 
@@ -423,7 +423,7 @@ function FAIO_pudge.PudgeAutoSuicide(myHero, myMana, rot)
 				if NPC.IsAttacking(v) then
 					if NPC.IsEntityInRange(myHero, v, NPC.GetAttackRange(v) + 140) then
 						if NPC.FindFacingNPC(v) == myHero then
-							if soulRing and Ability.IsReady(soulRing) and FAIO_pudge.heroCanCastItems(myHero) then
+							if soulRing and Ability.IsReady(soulRing) and FAIO_utility_functions.heroCanCastItems(myHero) then
 								Ability.CastNoTarget(soulRing)
 								if not Ability.GetToggleState(rot) then
 									Ability.Toggle(rot)
@@ -448,7 +448,7 @@ function FAIO_pudge.PudgeAutoSuicide(myHero, myMana, rot)
 						local abilityRadius = info[3]
 						if FAIO_dodgeIT.dodgeIsTargetMe(myHero, v, abilityRadius, abilityRange) then
 							if next(FAIO_dodgeIT.dodgeItTable) == nil then
-								if soulRing and Ability.IsReady(soulRing) and FAIO_pudge.heroCanCastItems(myHero) then
+								if soulRing and Ability.IsReady(soulRing) and FAIO_utility_functions.heroCanCastItems(myHero) then
 									Ability.CastNoTarget(soulRing)
 									if not Ability.GetToggleState(rot) then
 										Ability.Toggle(rot)
@@ -481,9 +481,9 @@ function FAIO_pudge.PudgeAutoFarm(myHero, myMana, rot)
 	if not myHero then return end
 	if not rot then return end
 
-	if FAIO_pudge.heroCanCastItems(myHero) == false then return end
-	if FAIO_pudge.isHeroChannelling(myHero) == true then return end
-	if FAIO_pudge.IsHeroInvisible(myHero) == true then return end
+	if FAIO_utility_functions.heroCanCastItems(myHero) == false then return end
+	if FAIO_utility_functions.isHeroChannelling(myHero) == true then return end
+	if FAIO_utility_functions.IsHeroInvisible(myHero) == true then return end
 
 	if os.clock() < FAIO_pudge.PudgeRotFarmToggledTime then return end
 
@@ -770,8 +770,8 @@ function FAIO_pudge.PudgeHookForceStaffFun(myHero, myMana, target, hook)
 		if not force then return false end
 		if not Ability.IsCastable(force, myMana) then return false end
 
-	if FAIO_pudge.heroCanCastSpells(myHero, target) == false then return false end
-	if FAIO_pudge.isHeroChannelling(myHero) == true then return false end 
+	if FAIO_utility_functions.heroCanCastSpells(myHero, target) == false then return false end
+	if FAIO_utility_functions.isHeroChannelling(myHero) == true then return false end 
 
 	local staffTargetRange = 750
 		if NPC.HasItem(myHero, "item_aether_lens", true) then

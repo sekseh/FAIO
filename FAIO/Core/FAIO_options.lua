@@ -36,8 +36,7 @@ FAIO_options.optionOrbwalkKiting = Menu.AddOption({ ".FAIO", "4. Orbwalker", "3.
 FAIO_options.optionOrbwalkDistanceMouse = Menu.AddOption({ ".FAIO", "4. Orbwalker", "4. Orbwalk to mouse options" }, "2. Min. distance for ranged heroes {{orbwalker mouse}}", "ranged heroes will not go nearer then minimum range to target - values are percentage of your attack range", 20, 80, 10)
 FAIO_options.optionOrbwalkMouseStyle = Menu.AddOption({ ".FAIO", "4. Orbwalker", "4. Orbwalk to mouse options" }, "1. Mouse orbwalk {{orbwalker mouse}}", "select if you only wanna mouse orb walk if your hero is ranged or with any hero", 0, 1, 1)
 FAIO_options.optionOrbwalkMouseHold = Menu.AddOption({ ".FAIO", "4. Orbwalker", "4. Orbwalk to mouse options" }, "3. Hold distance {{orbwalker mouse}}", "mouse must be outside of hold distance to your hero to trigger a move", 50, 250, 25)
-FAIO_options.optionWorldToMinimapOffsetX = Menu.AddOption({ ".FAIO", "6. WorldToMinimap" }, "X-Offset {{minimap}}", "Adjustment variable for World-to-minimap renderer", -30, 30, 1)
-FAIO_options.optionWorldToMinimapOffsetY = Menu.AddOption({ ".FAIO", "6. WorldToMinimap" }, "Y-Offset {{minimap}}", "Adjustment variable for World-to-minimap renderer", -30, 30, 1)
+
 FAIO_options.optionDodgeItEnable = Menu.AddOption({ ".FAIO", "98. <BETA> DodgeIt" }, "0. Enable {{dodgeit}}", "experimental manta dodger")
 FAIO_options.optionLastHitEnable = Menu.AddOption({ ".FAIO", "97. <BETA> Last Hitter" }, "0. Enable {{lasthit}}", "experimental last hitter")
 FAIO_options.optionLastHitKey = Menu.AddKeyOption({ ".FAIO", "97. <BETA> Last Hitter" }, "1. Activation key {{lasthit}}", Enum.ButtonCode.KEY_P)
@@ -524,10 +523,19 @@ FAIO_options.optionHeroTinkerMiscFailRockets = Menu.AddOption({ ".FAIO", "3. Her
 FAIO_options.optionHeroTinkerMiscGlimmer = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "3. Intelligence heroes", "Tinker", "6. Misc options" }, "3. Auto glimmer {{tinker misc}}", "will auto cast glimmer in rocket and farm mode")
 FAIO_options.optionHeroTinkerMiscBlink = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "3. Intelligence heroes", "Tinker", "6. Misc options" }, "4. Auto blink after rearm {{tinker misc}}", "will auto use blink in facing direction if in danger and manually casted rearm")
 
-FAIO_options.optionHeroDisruptor = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "3. Intelligence heroes", "Disruptor" }, "1. Disruptor Combo", "")
-FAIO_options.optionHeroDisruptorComboIndicator = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "3. Intelligence heroes", "Disruptor" }, "4. Draw combo indicator", "will draw skill images if glimpse-field or glimpse-storm-field combo is possible")
-FAIO_options.optionHeroDisruptorGlimpseParticle = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "3. Intelligence heroes", "Disruptor" }, "5. Draw glimpse position", "")
-
+FAIO_options.optionHeroDisruptor = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "3. Intelligence heroes", "Disruptor" }, "1. Disruptor Combo {{disruptor}}", "")
+FAIO_options.optionHeroDisruptorBlink = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "3. Intelligence heroes", "Disruptor" }, "2. Use blink in combo {{disruptor}}", "")
+FAIO_options.optionHeroDisruptorBlinkRange = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "3. Intelligence heroes", "Disruptor" }, "2.1 Blink distance {{disruptor}}", "", 100, 600, 50)
+FAIO_options.optionHeroDisruptorGlimpseCombo = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "3. Intelligence heroes", "Disruptor", "3. Glimpse Combo" }, "1. Enable glimpse combo {{disruptor}}", "")
+FAIO_options.optionHeroDisruptorGlimpseComboKey = Menu.AddKeyOption({ ".FAIO", "3. Hero Scripts", "3. Intelligence heroes", "Disruptor", "3. Glimpse Combo" }, "2. Glimpse combo key {{disruptor}}", Enum.ButtonCode.BUTTON_CODE_NONE)
+FAIO_options.optionHeroDisruptorGlimpseComboMove = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "3. Intelligence heroes", "Disruptor", "3. Glimpse Combo" }, "3. Move to cursor if not in range {{disruptor glimpse}}", "")
+FAIO_options.optionHeroDisruptorGlimpseComboMoveDis = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "3. Intelligence heroes", "Disruptor", "3. Glimpse Combo" }, "3.1 Disable movement AFTER combo {{disruptor glimpse}}", "disables movement if combo is done or not castable due to cooldowns")
+FAIO_options.optionHeroDisruptorUltCombo = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "3. Intelligence heroes", "Disruptor", "4. Ult Combo" }, "1. Enable ult combo {{disruptor}}", "")
+FAIO_options.optionHeroDisruptorUltComboKey = Menu.AddKeyOption({ ".FAIO", "3. Hero Scripts", "3. Intelligence heroes", "Disruptor", "4. Ult Combo" }, "2. Ult combo key {{disruptor}}", Enum.ButtonCode.BUTTON_CODE_NONE)
+FAIO_options.optionHeroDisruptorUltComboMove = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "3. Intelligence heroes", "Disruptor", "4. Ult Combo" }, "3. Move to cursor if not in range {{disruptor ult}}", "")
+FAIO_options.optionHeroDisruptorUltComboMoveDis = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "3. Intelligence heroes", "Disruptor", "4. Ult Combo" }, "3.1 Disable movement AFTER combo {{disruptor ult}}", "disables movement if combo is done or not castable due to cooldowns")
+FAIO_options.optionHeroDisruptorComboIndicator = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "3. Intelligence heroes", "Disruptor", "5. Drawings" }, "1. Draw combo indicator {{disruptor}}", "will draw skill images if glimpse-field or glimpse-storm-field combo is possible")
+FAIO_options.optionHeroDisruptorGlimpseParticle = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "3. Intelligence heroes", "Disruptor", "5. Drawings" }, "2. Draw glimpse position {{disruptor}}", "")
 
 
 

@@ -80,16 +80,16 @@ function FAIO_killsteal.autoNuke(myHero)
 
 	if os.clock() - FAIO_killsteal.internalTick < 3 then return end
 
-	if FAIO_killsteal.heroCanCastItems(myHero) == false then return end
-	if FAIO_killsteal.isHeroChannelling(myHero) == true then return end 
-	if FAIO_killsteal.IsHeroInvisible(myHero) == true then return end
+	if FAIO_utility_functions.heroCanCastItems(myHero) == false then return end
+	if FAIO_utility_functions.isHeroChannelling(myHero) == true then return end 
+	if FAIO_utility_functions.IsHeroInvisible(myHero) == true then return end
 	if FAIO_utility_functions.inSkillAnimation(myHero) == true then return end
 
 	if Menu.IsEnabled(FAIO_options.optionKillStealEnableItems) then
 		FAIO_killsteal.autoNukeItems(myHero)
 	end
 
-	if FAIO_killsteal.heroCanCastSpells(myHero, enemy) == false then return end
+	if FAIO_utility_functions.heroCanCastSpells(myHero, enemy) == false then return end
 
 	if Menu.IsEnabled(FAIO_options.optionKillStealEnable) then
 		FAIO_killsteal.autoNukeSkills(myHero)

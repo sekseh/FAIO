@@ -97,9 +97,9 @@ function FAIO_viper.ViperAutoHarass(myHero, myMana)
 	if not Q then return end
 		if Ability.GetLevel(Q) < 1 then return end
 
-	if FAIO_viper.heroCanCastSpells(myHero, enemy) == false then return end
-	if FAIO_viper.isHeroChannelling(myHero) == true then return end 
-	if FAIO_viper.IsHeroInvisible(myHero) == true then return end
+	if FAIO_utility_functions.heroCanCastSpells(myHero, enemy) == false then return end
+	if FAIO_utility_functions.isHeroChannelling(myHero) == true then return end 
+	if FAIO_utility_functions.IsHeroInvisible(myHero) == true then return end
 
 	local harassTarget = nil
 		for _, hero in ipairs(NPC.GetHeroesInRadius(myHero, NPC.GetAttackRange(myHero), Enum.TeamType.TEAM_ENEMY)) do
@@ -148,9 +148,9 @@ function FAIO_viper.ViperFarmHelper(myHero, myMana)
 	if not W then return end
 		if not Ability.IsCastable(W, myMana) then return end
 
-	if FAIO_viper.heroCanCastSpells(myHero, enemy) == false then return end
-	if FAIO_viper.isHeroChannelling(myHero) == true then return end 
-	if FAIO_viper.IsHeroInvisible(myHero) == true then return end
+	if FAIO_utility_functions.heroCanCastSpells(myHero, enemy) == false then return end
+	if FAIO_utility_functions.isHeroChannelling(myHero) == true then return end 
+	if FAIO_utility_functions.IsHeroInvisible(myHero) == true then return end
 
 	for _, creeps in ipairs(Entity.GetUnitsInRadius(myHero, 800, Enum.TeamType.TEAM_ENEMY)) do
 		if creeps and Entity.IsNPC(creeps) and not Entity.IsHero(creeps) and Entity.IsAlive(creeps) and not Entity.IsDormant(creeps) and not NPC.IsWaitingToSpawn(creeps) and NPC.GetUnitName(creeps) ~= "npc_dota_neutral_caster" and NPC.IsCreep(creeps) and NPC.GetUnitName(creeps) ~= nil then

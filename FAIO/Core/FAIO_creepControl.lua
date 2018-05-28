@@ -57,7 +57,7 @@ function FAIO_creepControl.controllableHandler(myHero, target)
 	local neutralRange
 		for i, v in ipairs(FAIO_creepControl.ControllableEntityTable) do
 			for k, l in ipairs(FAIO_data.neutralsAbilityListDebuff) do
-				if NPC.HasAbility(v, l[1]) and FAIO_creepControl.heroCanCastSpells(v, target) == true and not NPC.HasState(target, Enum.ModifierState.MODIFIER_STATE_MAGIC_IMMUNE) then
+				if NPC.HasAbility(v, l[1]) and FAIO_utility_functions.heroCanCastSpells(v, target) == true and not NPC.HasState(target, Enum.ModifierState.MODIFIER_STATE_MAGIC_IMMUNE) then
 					if Ability.IsCastable(NPC.GetAbility(v, l[1]), NPC.GetMana(v)) then
 						neutralNPC = v
 						neutralAbility = NPC.GetAbility(v, l[1])
@@ -166,7 +166,7 @@ function FAIO_creepControl.controllableLegitHandler(myHero, target)
 	local neutralRange
 		for i, v in ipairs(FAIO_creepControl.ControllableEntityTable) do
 			for k, l in ipairs(FAIO_data.neutralsAbilityListDebuff) do
-				if NPC.HasAbility(v, l[1]) and FAIO_creepControl.heroCanCastSpells(v, target) == true and not NPC.HasState(target, Enum.ModifierState.MODIFIER_STATE_MAGIC_IMMUNE) then
+				if NPC.HasAbility(v, l[1]) and FAIO_utility_functions.heroCanCastSpells(v, target) == true and not NPC.HasState(target, Enum.ModifierState.MODIFIER_STATE_MAGIC_IMMUNE) then
 					if Ability.IsCastable(NPC.GetAbility(v, l[1]), NPC.GetMana(v)) then
 						neutralNPC = v
 						neutralAbility = NPC.GetAbility(v, l[1])

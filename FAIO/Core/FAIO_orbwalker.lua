@@ -35,7 +35,7 @@ function FAIO_orbwalker.OrbWalker(myHero, enemy)
 	if not enemy then return end
 
 	if NPC.IsChannellingAbility(myHero) then return end
-	if FAIO_orbwalker.isHeroChannelling(myHero) == true then return end
+	if FAIO_utility_functions.isHeroChannelling(myHero) == true then return end
 	if FAIO_orbwalker.orbwalkerCanAttack(myHero, enemy) == false then return end
 	if FAIO_utility_functions.inSkillAnimation(myHero) == true then return end
 
@@ -213,7 +213,7 @@ function FAIO_orbwalker.OrbWalker(myHero, enemy)
 				breakPoint2 = attackRange
 			end
 
-		local moveDistance2 = NPC.GetMoveSpeed(myHero) * (FAIO_orbwalker.orbwalkerBackswingTimer(myHero) - NPC.GetTimeToFace(myHero, enemy) - FAIO_orbwalker.TimeToFacePosition(myHero, mousePos)) * (1 - (Menu.GetValue(FAIO_options.optionOrbwalkOffset) / 100))		
+		local moveDistance2 = NPC.GetMoveSpeed(myHero) * (FAIO_orbwalker.orbwalkerBackswingTimer(myHero) - NPC.GetTimeToFace(myHero, enemy) - FAIO_utility_functions.TimeToFacePosition(myHero, mousePos)) * (1 - (Menu.GetValue(FAIO_options.optionOrbwalkOffset) / 100))		
 		
 		if FAIO_orbwalker.orbwalkerCanCastOrbwalkSkill(myHero, enemy) and orderSwitch then
 			Ability.CastTarget(FAIO_orbwalker.orbwalkerOrbwalkSkill, enemy)
@@ -420,7 +420,7 @@ function FAIO_orbwalker.orbwalkerCanCastOrbwalkSkill(myHero, enemy)
 		return false
 	end
 
-	if FAIO_orbwalker.heroCanCastSpells(myHero, enemy) == false then
+	if FAIO_utility_functions.heroCanCastSpells(myHero, enemy) == false then
 		return false
 	end
 

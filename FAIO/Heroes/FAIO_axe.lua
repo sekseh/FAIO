@@ -34,7 +34,7 @@ function FAIO_axe.combo(myHero, enemy)
 		end
 
 	if Menu.IsEnabled(FAIO_options.optionHeroAxeCulling) then
-		if culling and Ability.IsCastable(culling, myMana) and FAIO_axe.isHeroChannelling(myHero) == false and FAIO_axe.IsHeroInvisible(myHero) == false then
+		if culling and Ability.IsCastable(culling, myMana) and FAIO_utility_functions.isHeroChannelling(myHero) == false and FAIO_utility_functions.IsHeroInvisible(myHero) == false then
 			local cullingEnemy = NPC.GetHeroesInRadius(myHero, 150 + NPC.GetCastRangeBonus(myHero), Enum.TeamType.TEAM_ENEMY)
 			for i, v in ipairs(cullingEnemy) do
 				if v then

@@ -37,7 +37,7 @@ function FAIO_crystal_maiden.combo(myHero, enemy)
 			if not NPC.HasItem(myHero, "item_blink", true) or (NPC.HasItem(myHero, "item_blink", true) and not Ability.IsReady(NPC.GetItem(myHero, "item_blink", true))) then return end
 
 		if Menu.IsKeyDown(FAIO_options.optionHeroCMUltKey) and Entity.IsAlive(enemy) and NPC.IsEntityInRange(myHero, enemy, 1150 + 450) then
-			if not NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_MAGIC_IMMUNE) and FAIO_crystal_maiden.heroCanCastSpells(myHero, enemy) == true then
+			if not NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_MAGIC_IMMUNE) and FAIO_utility_functions.heroCanCastSpells(myHero, enemy) == true then
 			
 				FAIO_crystal_maiden.system(switch, function (continue, wait)
 
@@ -60,7 +60,7 @@ function FAIO_crystal_maiden.comboExecute(myHero, enemy, myMana)
 	end
 	
 	if FAIO_skillHandler.skillIsCastable(W, Ability.GetCastRange(W), enemy, nil, true) then
-		if FAIO_crystal_maiden.TargetGotDisableModifier(myHero, enemy) == false then
+		if FAIO_utility_functions.TargetGotDisableModifier(myHero, enemy) == false then
 			FAIO_skillHandler.executeSkillOrder(W, enemy, nil)
 			return
 		end
