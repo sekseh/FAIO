@@ -177,31 +177,48 @@ function FAIO_orbwalker.OrbWalker(myHero, enemy)
 				FAIO_orbwalker.orbwalkerHumanizerTimer = os.clock() + FAIO_orbwalker.humanizerMouseDelayCalc(Entity.GetAbsOrigin(enemy)) + 0.05
 				return
 			end
+
 		end
 
 		if orbwalkStatus == 3 then
-			if (Entity.GetAbsOrigin(enemy) - Entity.GetAbsOrigin(myHero)):Length2D() > breakPoint then
-				if moveDistance > 25 then
-					local targetVector = Entity.GetAbsOrigin(myHero) + (Entity.GetAbsOrigin(enemy) - Entity.GetAbsOrigin(myHero)):Normalized():Scaled(moveDistance)
-					NPC.MoveTo(myHero, targetVector, false, true)
-					FAIO_orbwalker.orbwalkerMoveOrderTimer = os.clock()
-					FAIO_orbwalker.orbwalkerHumanizerTimer = os.clock() + FAIO_orbwalker.humanizerMouseDelayCalc(targetVector) + 0.05
-					return
-				end
-			end
 
-			if Menu.IsEnabled(FAIO_options.optionOrbwalkKiting) then
-				if NPC.IsRanged(myHero) then
-					if (Entity.GetAbsOrigin(enemy) - Entity.GetAbsOrigin(myHero)):Length2D() < breakPoint - 50 then
-						if kiteDistance > 50 then
-							local targetVector = Entity.GetAbsOrigin(myHero) + (Entity.GetAbsOrigin(myHero) - Entity.GetAbsOrigin(enemy)):Normalized():Scaled(kiteDistance)
-							NPC.MoveTo(myHero, targetVector, false, true)
-							FAIO_orbwalker.orbwalkerMoveOrderTimer = os.clock()
-							FAIO_orbwalker.orbwalkerHumanizerTimer = os.clock() + FAIO_orbwalker.humanizerMouseDelayCalc(targetVector) + 0.05
-							return
+			if NPC.IsRanged(myHero) then
+				if (Entity.GetAbsOrigin(enemy) - Entity.GetAbsOrigin(myHero)):Length2D() > breakPoint then
+					if moveDistance > 25 then
+						local targetVector = Entity.GetAbsOrigin(myHero) + (Entity.GetAbsOrigin(enemy) - Entity.GetAbsOrigin(myHero)):Normalized():Scaled(moveDistance)
+						NPC.MoveTo(myHero, targetVector, false, true)
+						FAIO_orbwalker.orbwalkerMoveOrderTimer = os.clock()
+						FAIO_orbwalker.orbwalkerHumanizerTimer = os.clock() + FAIO_orbwalker.humanizerMouseDelayCalc(targetVector) + 0.05
+						return
+					end
+				end
+
+				if Menu.IsEnabled(FAIO_options.optionOrbwalkKiting) then
+					if NPC.IsRanged(myHero) then
+						if (Entity.GetAbsOrigin(enemy) - Entity.GetAbsOrigin(myHero)):Length2D() < breakPoint - 50 then
+							if kiteDistance > 50 then
+								local targetVector = Entity.GetAbsOrigin(myHero) + (Entity.GetAbsOrigin(myHero) - Entity.GetAbsOrigin(enemy)):Normalized():Scaled(kiteDistance)
+								NPC.MoveTo(myHero, targetVector, false, true)
+								FAIO_orbwalker.orbwalkerMoveOrderTimer = os.clock()
+								FAIO_orbwalker.orbwalkerHumanizerTimer = os.clock() + FAIO_orbwalker.humanizerMouseDelayCalc(targetVector) + 0.05
+								return
+							end
 						end
 					end
 				end
+			
+			else
+				if (Entity.GetAbsOrigin(enemy) - Entity.GetAbsOrigin(myHero)):Length2D() > breakPoint then
+					local distanceToEnemy = (Entity.GetAbsOrigin(myHero) - Entity.GetAbsOrigin(enemy)):Length2D() - NPC.GetHullRadius(myHero) - NPC.GetHullRadius(enemy)
+					if math.min(moveDistance, distanceToEnemy) > 25 then
+						local targetVector = Entity.GetAbsOrigin(myHero) + (Entity.GetAbsOrigin(enemy) - Entity.GetAbsOrigin(myHero)):Normalized():Scaled(math.min(moveDistance, distanceToEnemy))
+						NPC.MoveTo(myHero, targetVector, false, true)
+						FAIO_orbwalker.orbwalkerMoveOrderTimer = os.clock()
+						FAIO_orbwalker.orbwalkerHumanizerTimer = os.clock() + FAIO_orbwalker.humanizerMouseDelayCalc(targetVector) + 0.05
+						return
+					end
+				end
+				
 			end
 		end
 	else
@@ -320,12 +337,22 @@ function FAIO_orbwalker.orbwalkerInAttackAnimation()
 			end
 		end
 
-	if os.clock() >= FAIO_orbwalker.orbwalkerAnimationCaptureTime then
-		if FAIO_orbwalker.orbwalkerAnimationCaptureTime > animationEndTimer then
-			if os.clock() < FAIO_orbwalker.orbwalkerAnimationCaptureTime + FAIO_orbwalker.orbwalkerAttackPoint + 0.2 then
-				return true
+	if Heroes.GetLocal() then
+		if NPC.IsRanged(Heroes.GetLocal()) then
+			if os.clock() >= FAIO_orbwalker.orbwalkerAnimationCaptureTime then
+				if FAIO_orbwalker.orbwalkerAnimationCaptureTime > animationEndTimer then
+					if os.clock() < FAIO_orbwalker.orbwalkerAnimationCaptureTime + FAIO_orbwalker.orbwalkerAttackPoint + 0.2 then
+						return true
+					end
+				end	
 			end
-		end	
+		else
+			if os.clock() >= FAIO_orbwalker.orbwalkerAnimationCaptureTime then
+				if os.clock() < FAIO_orbwalker.orbwalkerAnimationCaptureTime + FAIO_orbwalker.orbwalkerAttackPoint + 0.2 then
+					return true
+				end
+			end
+		end
 	end
 
 	return false

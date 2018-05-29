@@ -483,6 +483,48 @@ function FAIO_utility_functions.TargetDisableTimer(myHero, enemy)
 
 end
 
+function FAIO_utility_functions.TargetIsHexed(myHero, npc)
+
+	if not myHero then return false end
+	if not npc then return false end
+
+	if NPC.HasModifier(npc, "modifier_sheepstick_debuff") then return true end
+	if NPC.HasModifier(npc, "modifier_lion_voodoo") then return true end
+	if NPC.HasModifier(npc, "modifier_shadow_shaman_voodoo") then return true end
+
+	return false
+
+end
+
+function FAIO_utility_functions.HexTimeLeft(myHero, npc)
+
+	if not myHero then return 0 end
+	if not npc then return 0 end
+
+	local hexModTable = {
+		"modifier_sheepstick_debuff",
+		"modifier_lion_voodoo",
+		"modifier_shadow_shaman_voodoo"
+			}
+
+	local hexMod = nil
+	for _, modifier in ipairs(hexModTable) do
+		if NPC.HasModifier(npc, modifier) then
+			hexMod = NPC.GetModifier(npc, modifier)
+			break
+		end
+	end
+
+	if hexMod ~= nil then
+		local dieTime = Modifier.GetDieTime(hexMod)
+		local timeLeft = dieTime - GameRules.GetGameTime()
+		return math.max(timeLeft, 0)
+	end
+
+	return 0
+
+end
+
 function FAIO_utility_functions.GetTeammateAbilityLevel(myHero, ability)
 
 	if not myHero then return end
@@ -693,6 +735,77 @@ function FAIO_utility_functions.IsHeroInvisible(myHero)
 		
 end
 
+function FAIO_utility_functions.TargetIsStunnedOrSilenced(myHero, npc)
+
+	if not myHero then return false end
+	if not npc then return false end
+
+	local stunRootList = {
+		"modifier_stunned",
+		"modifier_bashed",
+		"modifier_alchemist_unstable_concoction", 
+		"modifier_ancientapparition_coldfeet_freeze", 
+		"modifier_axe_berserkers_call",
+		"modifier_bane_fiends_grip",
+		"modifier_bane_nightmare",
+		"modifier_rattletrap_hookshot", 
+		"modifier_earthshaker_fissure_stun", 
+		"modifier_earth_spirit_boulder_smash",
+		"modifier_enigma_black_hole_pull",
+		"modifier_faceless_void_chronosphere_freeze",
+		"modifier_jakiro_ice_path_stun", 
+		"modifier_keeper_of_the_light_mana_leak_stun", 
+		"modifier_kunkka_torrent", 
+		"modifier_legion_commander_duel", 
+		"modifier_lion_impale", 
+		"modifier_magnataur_reverse_polarity", 
+		"modifier_medusa_stone_gaze_stone", 
+		"modifier_morphling_adaptive_strike", 
+		"modifier_nyx_assassin_impale", 
+		"modifier_pudge_dismember", 
+		"modifier_sandking_impale", 
+		"modifier_shadow_shaman_shackles", 
+		"modifier_techies_stasis_trap_stunned", 
+		"modifier_tidehunter_ravage", 
+		"modifier_windrunner_shackle_shot",
+		"modifier_storm_spirit_electric_vortex_pull",
+			}
+	
+	local searchMod
+	for _, modifier in ipairs(stunRootList) do
+		if NPC.HasModifier(npc, modifier) then
+			searchMod = NPC.GetModifier(npc, modifier)
+			break
+		end
+	end
+
+	local timeleft = 0
+	if searchMod then
+		if NPC.HasModifier(npc, Modifier.GetName(searchMod)) then
+			if Modifier.GetName(searchMod) == "modifier_enigma_black_hole_pull" then
+				timeleft = Modifier.GetCreationTime(searchMod) + 4
+			elseif Modifier.GetName(searchMod) == "modifier_faceless_void_chronosphere_freeze" then
+				timeleft = Modifier.GetCreationTime(searchMod) + 4.5
+			else
+				timeleft = Modifier.GetDieTime(searchMod)
+			end
+		else
+			timeleft = 0
+		end
+	else
+		timeleft = 0
+	end
+
+	if timeleft > 0.3 then
+		return true
+	end
+
+	if NPC.IsSilenced(npc) then return true end
+
+	return false
+
+end
+
 function FAIO_utility_functions.TargetGotDisableModifier(myHero, npc)
 
 	if not myHero then return false end
@@ -738,7 +851,7 @@ function FAIO_utility_functions.TargetGotDisableModifier(myHero, npc)
 		"modifier_storm_spirit_electric_vortex_pull",
 		"modifier_treant_overgrowth", 
 		"modifier_abyssal_underlord_pit_of_malice_ensare", 
-		"modifier_item_rod_of_atos_debuff",
+		"modifier_item_rod_of_atos_debuff"
 			}
 	
 	local searchMod

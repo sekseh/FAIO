@@ -884,15 +884,8 @@ function FAIO_itemHandler.itemUsageSmartOrder(myHero, enemy, activation)
 				end
 			end
 
-			if NPC.HasModifier(enemy, "modifier_bashed") then
-				if v[2] == "item_abyssal_blade" or v[2] == "item_sheepstick" or v[2] == "item_bloodthorn" or v[2] == "item_orchid" or v[2] == "item_nullifier" or v[2] == "item_diffusal_blade" then
-					skipItem = v[1]
-				end
-			end
-
-			if NPC.HasModifier(enemy, "modifier_stunned") then
-				local dieTime = Modifier.GetDieTime(NPC.GetModifier(enemy, "modifier_stunned"))
-				if GameRules.GetGameTime() <= dieTime - 0.1 then
+			if FAIO_utility_functions.TargetDisableTimer(myHero, enemy) > 0 then
+				if GameRules.GetGameTime() <= FAIO_utility_functions.TargetDisableTimer(myHero, enemy) - 0.1 then
 					if v[2] == "item_abyssal_blade" or v[2] == "item_sheepstick" or v[2] == "item_bloodthorn" or v[2] == "item_orchid" or v[2] == "item_heavens_halberd" or v[2] == "item_nullifier" or v[2] == "item_diffusal_blade" then
 						skipItem = v[1]
 					end
@@ -912,6 +905,12 @@ function FAIO_itemHandler.itemUsageSmartOrder(myHero, enemy, activation)
 						if v[2] == "item_abyssal_blade" or v[2] == "item_sheepstick" or v[2] == "item_bloodthorn" or v[2] == "item_orchid" or v[2] == "item_heavens_halberd" or v[2] == "item_nullifier" or v[2] == "item_diffusal_blade" then
 							skipItem = v[1]
 						end
+					end
+				end
+			else
+				if FAIO_utility_functions.TargetIsHexed(myHero, enemy) == true then
+					if v[2] == "item_abyssal_blade" or v[2] == "item_sheepstick" or v[2] == "item_bloodthorn" or v[2] == "item_orchid" or v[2] == "item_heavens_halberd" or v[2] == "item_nullifier" or v[2] == "item_diffusal_blade" then
+						skipItem = v[1]
 					end
 				end
 			end
@@ -1022,6 +1021,20 @@ function FAIO_itemHandler.itemUsageSmartOrder(myHero, enemy, activation)
 				end
 			end
 
+	--		if NPC.HasAbility(myHero, "lion_voodoo") then
+	--			if FAIO_skillHandler.skillIsCastable(NPC.GetAbility(myHero, "lion_voodoo"), Ability.GetCastRange(NPC.GetAbility(myHero, "lion_voodoo")), enemy, Entity.GetAbsOrigin(enemy), false) == true then
+	--				if v[2] == "item_sheepstick" then
+	--					skipItem = v[1]
+	--				end
+	--			else
+	--				if Ability.SecondsSinceLastUse(NPC.GetAbility(myHero, "lion_voodoo")) <= 0.35 then
+	--					if v[2] == "item_sheepstick" then
+	--						skipItem = v[1]
+	--					end
+	--				end
+	--			end
+	--		end
+
 			if NPC.HasItem(enemy, "item_aeon_disk", true) then
 				if Ability.SecondsSinceLastUse(NPC.GetItem(enemy, "item_aeon_disk", true)) < 0 then
 					if Entity.GetHealth(enemy) >= 0.85 * Entity.GetMaxHealth(enemy) then
@@ -1067,18 +1080,21 @@ function FAIO_itemHandler.itemUsageSmartOrder(myHero, enemy, activation)
 					if itemActivation == "target" then
 						Ability.CastTarget(orderItem, enemy)
 						FAIO_itemHandler.lastItemCast = os.clock()
+						FAIO_itemHandler.mainTick = os.clock() + 0.05 + NPC.GetTimeToFace(myHero, enemy) + FAIO_itemHandler.humanizerMouseDelayCalc(Entity.GetAbsOrigin(enemy)) + NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING)
 						customOrder = 0
 						return
 					end
 					if itemActivation == "no target" then
 						Ability.CastNoTarget(orderItem)
 						FAIO_itemHandler.lastItemCast = os.clock()
+						FAIO_itemHandler.mainTick = os.clock() + 0.05 + NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING)
 						customOrder = 0
 						return
 					end
 					if itemActivation == "position" then
 						Ability.CastPosition(orderItem, Entity.GetAbsOrigin(enemy))
 						FAIO_itemHandler.lastItemCast = os.clock()
+						FAIO_itemHandler.mainTick = os.clock() + 0.05 + FAIO_utility_functions.TimeToFacePosition(myHero, Entity.GetAbsOrigin(enemy)) + FAIO_itemHandler.humanizerMouseDelayCalc(Entity.GetAbsOrigin(enemy)) + NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING)
 						customOrder = 0
 						return
 					end
@@ -1088,12 +1104,14 @@ function FAIO_itemHandler.itemUsageSmartOrder(myHero, enemy, activation)
 		if FAIO_itemHandler.ItemSleepReady(0.05) and mjollnir and NPC.IsEntityInRange(myHero, enemy, NPC.GetAttackRange(myHero)) and Ability.IsCastable(mjollnir, myMana) and Menu.GetValue(FAIO_options.optionItemMjollnir) > 0 then
 			Ability.CastTarget(mjollnir, myHero)
 			FAIO_itemHandler.lastItemCast = os.clock()
+			FAIO_itemHandler.mainTick = os.clock() + 0.05 + NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) + FAIO_itemHandler.humanizerMouseDelayCalc(Entity.GetAbsOrigin(myHero))
 			return
 		end
 
 		if FAIO_itemHandler.ItemSleepReady(0.05) and manta and NPC.IsEntityInRange(myHero, enemy, NPC.GetAttackRange(myHero)) and Ability.IsCastable(manta, myMana) and Menu.GetValue(FAIO_options.optionItemManta) > 0 then
 			Ability.CastNoTarget(manta)
 			FAIO_itemHandler.lastItemCast = os.clock()
+			FAIO_itemHandler.mainTick = os.clock() + 0.05 + NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) + FAIO_itemHandler.humanizerMouseDelayCalc(Entity.GetAbsOrigin(myHero))
 			return
 		end
 	end
