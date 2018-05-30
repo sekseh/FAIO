@@ -238,6 +238,15 @@ FAIO_options.optionHeroPudgeHookJuke = Menu.AddOption({ ".FAIO", "3. Hero Script
 FAIO_options.optionHeroPudgeFarm = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "1. Strength heroes", "Pudge", "6. Misc" }, "1. Rot farm {{pudge misc}}", "")
 FAIO_options.optionHeroPudgeFarmHP = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "1. Strength heroes", "Pudge", "6. Misc" }, "1.1 Rot farm HP treshold {{pudge misc}}", "in life %", 5, 75, 5)
 FAIO_options.optionHeroPudgeSuicide = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "1. Strength heroes", "Pudge", "6. Misc" }, "2. Auto suicide {{pudge misc}}", "")
+FAIO_options.optionHeroEarthshaker = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "1. Strength heroes", "Earthshaker" }, "1. Earthshaker Combo {{earth}}", "basic earthshaker script")
+FAIO_options.optionHeroEarthshakerBlink = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "1. Strength heroes", "Earthshaker" }, "2. Use blink in combo {{earth}}", "")
+FAIO_options.optionHeroEarthshakerBlinkStyle = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "1. Strength heroes", "Earthshaker" }, "2.1 Blink style {{earth}}", "", 0, 1, 1)
+FAIO_options.optionHeroEarthshakerUlt = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "1. Strength heroes", "Earthshaker" }, "3. Use ult in combo {{earth}}", "")
+FAIO_options.optionHeroEarthshakerUltTiming = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "1. Strength heroes", "Earthshaker" }, "3.1 Ult usage timing {{earth}}", "", 0, 1, 1)
+FAIO_options.optionHeroEarthshakerUltStyle = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "1. Strength heroes", "Earthshaker" }, "3.2 Ult usage style {{earth}}", "", 0, 1, 1)
+FAIO_options.optionHeroEarthshakerUltEchoes = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "1. Strength heroes", "Earthshaker" }, "3.3 Minimum echoes created {{earth}}", "casts ult only above minimum number of damaging echoes created by echo slam FOR ALWAYS STYLE, casting ult with on key down style will override this option (fail switch still active if only one unit in range)", 2, 10, 1)
+FAIO_options.optionHeroEarthshakerUltKey = Menu.AddKeyOption({ ".FAIO", "3. Hero Scripts", "1. Strength heroes", "Earthshaker" }, "3.4 Additional ult key {{earth}}", Enum.ButtonCode.BUTTON_CODE_NONE)
+FAIO_options.optionHeroEarthshakerRefresher = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "1. Strength heroes", "Earthshaker" }, "4. Use refresher in combo {{earth}}", "will use refresher if needed")
 
 		-- AGI
 FAIO_options.optionHeroEmber = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "2. Agility heroes", "Ember" }, "Ember Combo", "hold combo key -> full combo with remnant, release key after ~ 1 sec -> fist+chains")
@@ -489,6 +498,7 @@ FAIO_options.optionHeroWDBlinkRange = Menu.AddOption({ ".FAIO", "3. Hero Scripts
 FAIO_options.optionHeroSS = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "3. Intelligence heroes", "Shadow Shaman" }, "1. Shaman Combo", "q+w+e combo")
 FAIO_options.optionHeroSSBlink = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "3. Intelligence heroes", "Shadow Shaman" }, "2. Use blink in combo {{SS}}", "")
 FAIO_options.optionHeroSSBlinkRange = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "3. Intelligence heroes", "Shadow Shaman" }, "3. Blink distance {{SS}}", "", 100, 350, 50)
+FAIO_options.optionHeroSSForceHex = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "3. Intelligence heroes", "Shadow Shaman" }, "4. Force hex before ether shock", "")
 FAIO_options.optionHeroDP = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "3. Intelligence heroes", "Death prophet" }, "1. Death Prophet Combo", "q+w+e combo")
 FAIO_options.optionHeroDPBlink = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "3. Intelligence heroes", "Death prophet" }, "2. Use blink in combo {{DP}}", "")
 FAIO_options.optionHeroDPBlinkRange = Menu.AddOption({ ".FAIO", "3. Hero Scripts", "3. Intelligence heroes", "Death prophet" }, "3. Blink distance {{DP}}", "", 100, 550, 50)
@@ -653,6 +663,13 @@ Menu.SetValueName(FAIO_options.optionLinkensPike, 0, 'OFF')
 
 Menu.SetValueName(FAIO_options.optionHeroDrowGustMode, 0, 'only if needed')
 Menu.SetValueName(FAIO_options.optionHeroDrowGustMode, 1, 'always')
+
+Menu.SetValueName(FAIO_options.optionHeroEarthshakerBlinkStyle, 0, 'blink to cursor')
+Menu.SetValueName(FAIO_options.optionHeroEarthshakerBlinkStyle, 1, 'blink to best position')
+Menu.SetValueName(FAIO_options.optionHeroEarthshakerUltStyle, 0, 'always')
+Menu.SetValueName(FAIO_options.optionHeroEarthshakerUltStyle, 1, 'on key down')
+Menu.SetValueName(FAIO_options.optionHeroEarthshakerUltTiming, 0, 'instant')
+Menu.SetValueName(FAIO_options.optionHeroEarthshakerUltTiming, 1, 'max stun time')
 
 Menu.SetValueName(FAIO_options.optionHeroEmberUlt, 0, 'use all charges')
 Menu.SetValueName(FAIO_options.optionHeroEmberUlt, 1, 'use one charge')

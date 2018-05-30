@@ -267,7 +267,7 @@ function FAIO_pudge.comboExecute(myHero, enemy, myMana, maxInitRange)
 			end
 
 		if Menu.IsEnabled(FAIO_options.optionHeroPudgeHookCombo) and not check and not NPC.HasModifier(myHero, "modifier_item_forcestaff_active") then
-			local hookPrediction = Ability.GetCastPoint(Q) + NPC.GetTimeToFace(myHero, enemy) + (Entity.GetAbsOrigin(enemy):__sub(Entity.GetAbsOrigin(myHero)):Length2D() / 1450) + FAIO_pudge.humanizerMouseDelayCalc(Entity.GetAbsOrigin(enemy)) + (NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) * 2)
+			local hookPrediction = Ability.GetCastPoint(Q) + (Entity.GetAbsOrigin(enemy):__sub(Entity.GetAbsOrigin(myHero)):Length2D() / 1450) + (NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) * 2)
 			local hookPredictedPos = FAIO_utility_functions.castPrediction(myHero, enemy, hookPrediction)
 			if FAIO_skillHandler.skillIsCastable(Q, Menu.GetValue(FAIO_options.optionHeroPudgeHookComboMaxRange), enemy, hookPredictedPos, false) and not NPC.IsChannellingAbility(myHero) then
 				if FAIO_pudge.PudgeHookCollisionChecker(myHero, enemy) and not FAIO_pudge.PudgeHookJukingChecker(myHero, enemy) then
@@ -329,7 +329,7 @@ function FAIO_pudge.hookComboExecute(myHero, myMana, npc)
 	end
 
 	local hookRange = Ability.GetCastRange(Q)
-	local pred = Ability.GetCastPoint(Q) + NPC.GetTimeToFace(myHero, npc) + (Entity.GetAbsOrigin(npc):__sub(Entity.GetAbsOrigin(myHero)):Length2D() / 1450) + FAIO_pudge.humanizerMouseDelayCalc(Entity.GetAbsOrigin(npc)) + (NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) * 2)
+	local pred = Ability.GetCastPoint(Q) + (Entity.GetAbsOrigin(npc):__sub(Entity.GetAbsOrigin(myHero)):Length2D() / 1450) + (NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) * 2)
 	local predPos = FAIO_utility_functions.castPrediction(myHero, npc, pred)
 
 	if not NPC.IsPositionInRange(myHero, predPos, hookRange + 100, 20) then return end
@@ -557,7 +557,7 @@ function FAIO_pudge.PudgeHookCollisionChecker(myHero, target)
 	if not myHero then return false end
 	if not target then return false end
 
-	local pred = 0.3 + NPC.GetTimeToFace(myHero, target) + (Entity.GetAbsOrigin(target):__sub(Entity.GetAbsOrigin(myHero)):Length2D() / 1450) + (NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) * 2) + FAIO_pudge.humanizerMouseDelayCalc(Entity.GetAbsOrigin(target))
+	local pred = 0.3 + (Entity.GetAbsOrigin(target):__sub(Entity.GetAbsOrigin(myHero)):Length2D() / 1450) + (NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) * 2)
 	local predPos = FAIO_utility_functions.castPrediction(myHero, target, pred)
 
 	local searchRadius = 125

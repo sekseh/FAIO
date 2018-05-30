@@ -303,7 +303,7 @@ function FAIO_killsteal.autoNukeSkills(myHero)
 					elseif nukeStyle == "skillshot" then
 						local skillName = Ability.GetName(nukeSkill)
 						if skillName == "windrunner_powershot" then
-							local powershotPrediction = 1 + (Entity.GetAbsOrigin(enemy):__sub(Entity.GetAbsOrigin(myHero)):Length2D() / 3000) + (NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) * 2) + FAIO_killsteal.humanizerMouseDelayCalc(Entity.GetAbsOrigin(enemy))
+							local powershotPrediction = 1 + (Entity.GetAbsOrigin(enemy):__sub(Entity.GetAbsOrigin(myHero)):Length2D() / 3000) + (NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) * 2)
 							local predPos = FAIO_utility_functions.castLinearPrediction(myHero, enemy, powershotPrediction)
 							if predPos and NPC.IsPositionInRange(myHero, predPos, Ability.GetCastRange(nukeSkill), 0) then
 								FAIO_skillHandler.executeSkillOrder(nukeSkill, enemy, predPos)
@@ -311,7 +311,7 @@ function FAIO_killsteal.autoNukeSkills(myHero)
 								return
 							end
 						elseif skillName == "death_prophet_carrion_swarm" then
-							local carrionPrediction = 0.5 + (Entity.GetAbsOrigin(enemy):__sub(Entity.GetAbsOrigin(myHero)):Length2D() / 1100) + (NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) * 2) + FAIO_killsteal.humanizerMouseDelayCalc(Entity.GetAbsOrigin(enemy))
+							local carrionPrediction = 0.5 + (Entity.GetAbsOrigin(enemy):__sub(Entity.GetAbsOrigin(myHero)):Length2D() / 1100) + (NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) * 2)
 							local predPos = FAIO_utility_functions.castLinearPrediction(myHero, enemy, carrionPrediction)
 							if predPos and NPC.IsPositionInRange(myHero, predPos, Ability.GetCastRange(nukeSkill), 0) then
 								FAIO_skillHandler.executeSkillOrder(nukeSkill, enemy, predPos)
@@ -319,7 +319,7 @@ function FAIO_killsteal.autoNukeSkills(myHero)
 								return
 							end
 						elseif skillName == "kunkka_torrent" then
-							local kunkkaPrediction = 2 + (NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) * 2) + FAIO_killsteal.humanizerMouseDelayCalc(Entity.GetAbsOrigin(enemy))
+							local kunkkaPrediction = 2 + (NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) * 2)
 							local predPos = FAIO_utility_functions.castPrediction(myHero, enemy, kunkkaPrediction)
 							if predPos and NPC.IsPositionInRange(myHero, predPos, Ability.GetCastRange(nukeSkill), 0) then
 								FAIO_skillHandler.executeSkillOrder(nukeSkill, enemy, predPos)
@@ -327,7 +327,7 @@ function FAIO_killsteal.autoNukeSkills(myHero)
 								return
 							end
 						elseif skillName == "lina_dragon_slave" then		
-							local dragonSlavePrediction = Ability.GetCastPoint(nukeSkill) + (Entity.GetAbsOrigin(enemy):__sub(Entity.GetAbsOrigin(myHero)):Length2D() / 1200) + (NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) * 2) + FAIO_killsteal.humanizerMouseDelayCalc(Entity.GetAbsOrigin(enemy))
+							local dragonSlavePrediction = Ability.GetCastPoint(nukeSkill) + (Entity.GetAbsOrigin(enemy):__sub(Entity.GetAbsOrigin(myHero)):Length2D() / 1200) + (NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) * 2)
 							local predPos = FAIO_utility_functions.castLinearPrediction(myHero, enemy, dragonSlavePrediction)
 							if predPos and NPC.IsPositionInRange(myHero, predPos, Ability.GetCastRange(nukeSkill), 0) then
 								FAIO_skillHandler.executeSkillOrder(nukeSkill, enemy, predPos)
@@ -335,7 +335,7 @@ function FAIO_killsteal.autoNukeSkills(myHero)
 								return
 							end
 						elseif skillName == "magnataur_shockwave" then
-							local shockwavePrediction = Ability.GetCastPoint(nukeSkill) + (Entity.GetAbsOrigin(enemy):__sub(Entity.GetAbsOrigin(myHero)):Length2D() / 1050) + (NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) * 2) + FAIO_killsteal.humanizerMouseDelayCalc(Entity.GetAbsOrigin(enemy))
+							local shockwavePrediction = Ability.GetCastPoint(nukeSkill) + (Entity.GetAbsOrigin(enemy):__sub(Entity.GetAbsOrigin(myHero)):Length2D() / 1050) + (NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) * 2)
 							local predPos = FAIO_utility_functions.castLinearPrediction(myHero, enemy, shockwavePrediction)
 							if predPos and NPC.IsPositionInRange(myHero, predPos, Ability.GetCastRange(nukeSkill), 0) then
 								FAIO_skillHandler.executeSkillOrder(nukeSkill, enemy, predPos)
@@ -343,7 +343,7 @@ function FAIO_killsteal.autoNukeSkills(myHero)
 								return
 							end
 						elseif skillName == "pugna_nether_blast" then
-							local blastPrediction = Ability.GetCastPoint(nukeSkill) + 0.9 + (NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) * 2) + FAIO_killsteal.humanizerMouseDelayCalc(Entity.GetAbsOrigin(enemy))
+							local blastPrediction = Ability.GetCastPoint(nukeSkill) + 0.9 + (NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) * 2)
 							local predPos = FAIO_utility_functions.castPrediction(myHero, enemy, blastPrediction)
 							if predPos and NPC.IsPositionInRange(myHero, predPos, Ability.GetCastRange(nukeSkill), 0) then
 								FAIO_skillHandler.executeSkillOrder(nukeSkill, enemy, predPos)
@@ -351,7 +351,7 @@ function FAIO_killsteal.autoNukeSkills(myHero)
 								return
 							end
 						elseif skillName == "rattletrap_rocket_flare" then
-							local flairPrediction = Ability.GetCastPoint(nukeSkill) + (Entity.GetAbsOrigin(enemy):__sub(Entity.GetAbsOrigin(myHero)):Length2D() / 1750) + (NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) * 2) + FAIO_killsteal.humanizerMouseDelayCalc(Entity.GetAbsOrigin(enemy))
+							local flairPrediction = Ability.GetCastPoint(nukeSkill) + (Entity.GetAbsOrigin(enemy):__sub(Entity.GetAbsOrigin(myHero)):Length2D() / 1750) + (NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) * 2)
 							local predPos = FAIO_utility_functions.castLinearPrediction(myHero, enemy, flairPrediction)
 							if predPos then
 								FAIO_skillHandler.executeSkillOrder(nukeSkill, enemy, predPos)
@@ -359,7 +359,7 @@ function FAIO_killsteal.autoNukeSkills(myHero)
 								return
 							end
 						elseif skillName == "tusk_ice_shards" then
-							local shardsPrediction = Ability.GetCastPoint(nukeSkill) + (Entity.GetAbsOrigin(enemy):__sub(Entity.GetAbsOrigin(myHero)):Length2D() / 1100) + (NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) * 2) + FAIO_killsteal.humanizerMouseDelayCalc(Entity.GetAbsOrigin(enemy))
+							local shardsPrediction = Ability.GetCastPoint(nukeSkill) + (Entity.GetAbsOrigin(enemy):__sub(Entity.GetAbsOrigin(myHero)):Length2D() / 1100) + (NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) * 2)
 							local predPos = FAIO_utility_functions.castLinearPrediction(myHero, enemy, shardsPrediction)
 							if predPos and NPC.IsPositionInRange(myHero, predPos, Ability.GetCastRange(nukeSkill), 0) then
 								FAIO_skillHandler.executeSkillOrder(nukeSkill, enemy, predPos)
@@ -367,7 +367,7 @@ function FAIO_killsteal.autoNukeSkills(myHero)
 								return
 							end
 						elseif skillName == "vengefulspirit_wave_of_terror" then
-							local wavePrediction = Ability.GetCastPoint(nukeSkill) + (Entity.GetAbsOrigin(enemy):__sub(Entity.GetAbsOrigin(myHero)):Length2D() / 2000) + (NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) * 2) + FAIO_killsteal.humanizerMouseDelayCalc(Entity.GetAbsOrigin(enemy))	
+							local wavePrediction = Ability.GetCastPoint(nukeSkill) + (Entity.GetAbsOrigin(enemy):__sub(Entity.GetAbsOrigin(myHero)):Length2D() / 2000) + (NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) * 2)	
 							local predPos = FAIO_utility_functions.castLinearPrediction(myHero, enemy, wavePrediction)
 							if predPos and NPC.IsPositionInRange(myHero, predPos, Ability.GetCastRange(nukeSkill), 0) then
 								FAIO_skillHandler.executeSkillOrder(nukeSkill, enemy, predPos)

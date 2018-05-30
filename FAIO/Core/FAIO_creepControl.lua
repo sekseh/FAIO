@@ -396,7 +396,7 @@ function FAIO_creepControl.GetControllableEntities(myHero)
 				for i, v in ipairs(Player.GetSelectedUnits(Players.GetLocal())) do
 					local entityClass = Entity.GetClassName(v)
 					if v ~= myHero then
-						if entityClass == "CDOTA_Unit_Hero_ArcWarden" or entityClass == "C_DOTA_Unit_VisageFamiliar" then
+						if entityClass == "CDOTA_Unit_Hero_ArcWarden" or entityClass == "C_DOTA_Unit_VisageFamiliar" or entityClass == "C_DOTA_BaseNPC_Additive" then
 							check = true
 						end
 					end
@@ -431,33 +431,37 @@ function FAIO_creepControl.createActionTable(myHero)
 	if not myHero then return end
 
 	for i, v in ipairs(FAIO_creepControl.ControllableEntityTable) do
-		local index = Entity.GetIndex(v)
-		if FAIO_creepControl.ControllableActionTable[index] == nil then
-			FAIO_creepControl.ControllableActionTable[index] = { time = 0, order = nil, target = nil, recurring = 0 }
-		end
-		if not NPC.IsAttacking(v) then
-			if not NPC.IsRunning(v) then
-				if os.clock() > FAIO_creepControl.ControllableActionTable[index]["time"] + 0.55 then
-					if FAIO_creepControl.ControllableActionTable[index]["recurring"] > FAIO_creepControl.ControllableActionTable[index]["time"] then
-						if os.clock() > FAIO_creepControl.ControllableActionTable[index]["recurring"] + NPC.GetAttackTime(v) + 0.25 then
-							FAIO_creepControl.ControllableActionTable[index] = { time = 0, order = nil, target = nil, recurring = 0 }
+		if v and Entity.IsNPC(v) then
+			local index = Entity.GetIndex(v)
+			if FAIO_creepControl.ControllableActionTable[index] == nil then
+				FAIO_creepControl.ControllableActionTable[index] = { time = 0, order = nil, target = nil, recurring = 0 }
+			end
+			if not NPC.IsAttacking(v) then
+				if not NPC.IsRunning(v) then
+					if os.clock() > FAIO_creepControl.ControllableActionTable[index]["time"] + 0.55 then
+						if FAIO_creepControl.ControllableActionTable[index]["recurring"] > FAIO_creepControl.ControllableActionTable[index]["time"] then
+							if os.clock() > FAIO_creepControl.ControllableActionTable[index]["recurring"] + NPC.GetAttackTime(v) + 0.25 then
+								FAIO_creepControl.ControllableActionTable[index] = { time = 0, order = nil, target = nil, recurring = 0 }
+							end
 						end
 					end
+				else
+					FAIO_creepControl.ControllableActionTable[index]["recurring"] = os.clock()
 				end
 			else
 				FAIO_creepControl.ControllableActionTable[index]["recurring"] = os.clock()
-			end
-		else
-			FAIO_creepControl.ControllableActionTable[index]["recurring"] = os.clock()
-		end	
+			end	
+		end
 	end
 
 	for i, v in pairs(FAIO_creepControl.ControllableActionTable) do
 		local check = false
 			for k, l in ipairs(FAIO_creepControl.ControllableEntityTable) do
-				local index = Entity.GetIndex(l)
-				if i == index then
-					check = true
+				if l and Entity.IsNPC(l) then
+					local index = Entity.GetIndex(l)
+					if i == index then
+						check = true
+					end
 				end
 			end
 		if not check then

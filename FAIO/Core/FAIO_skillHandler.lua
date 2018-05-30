@@ -59,6 +59,20 @@ function FAIO_skillHandler.skillIsCastable(skill, castRange, target, position, l
 		return false
 	end
 
+	if NPC.HasModifier(myHero, "modifier_item_invisibility_edge_windwalk") then
+		return false
+	end
+
+	if NPC.HasModifier(myHero, "modifier_item_silver_edge_windwalk") then
+		return false
+	end
+
+	if FAIO_utility_functions.isHeroChannelling(myHero) == true then
+		if Ability.GetBehavior(skill) & Enum.AbilityBehavior.DOTA_ABILITY_BEHAVIOR_DONT_CANCEL_CHANNEL == 0 then
+			return false
+		end
+	end
+
 	if Ability.GetBehavior(skill) & Enum.AbilityBehavior.DOTA_ABILITY_BEHAVIOR_ITEM == 0 then
 		if FAIO_utility_functions.heroCanCastSpells(myHero, target) == false then
 			return false

@@ -58,7 +58,7 @@ function FAIO_utility_functions.castLinearPrediction(myHero, enemy, adjustmentVa
 		if enemyRotation and enemyOrigin then
 			if not NPC.IsRunning(enemy) then
 				return enemyOrigin
-			else return enemyOrigin:__add(enemyRotation:Normalized():Scaled(FAIO_utility_functions.GetMoveSpeed(enemy) * adjustmentVariable * (1 - cosGamma)))
+			else return enemyOrigin:__add(enemyRotation:Normalized():Scaled(FAIO_utility_functions.GetMoveSpeed(enemy) * (adjustmentVariable + FAIO_utility_functions.humanizerMouseDelayCalc(enemyOrigin) + FAIO_utility_functions.TimeToFacePosition(myHero, enemyOrigin)) * (1 - cosGamma)))
 			end
 		end
 end
@@ -76,7 +76,7 @@ function FAIO_utility_functions.castPrediction(myHero, enemy, adjustmentVariable
 	if enemyRotation and enemyOrigin then
 			if not NPC.IsRunning(enemy) then
 				return enemyOrigin
-			else return enemyOrigin:__add(enemyRotation:Normalized():Scaled(FAIO_utility_functions.GetMoveSpeed(enemy) * adjustmentVariable))
+			else return enemyOrigin:__add(enemyRotation:Normalized():Scaled(FAIO_utility_functions.GetMoveSpeed(enemy) * (adjustmentVariable + FAIO_utility_functions.humanizerMouseDelayCalc(enemyOrigin) + FAIO_utility_functions.TimeToFacePosition(myHero, enemyOrigin))))
 			end
 	end
 end

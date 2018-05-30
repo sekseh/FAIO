@@ -1,3 +1,6 @@
+-- humanizer for last hit
+-- fastPos for dodgeIT
+
 --[[
 ##################################################################
 FAIO - foos All-In-One script package for hake.me
@@ -807,9 +810,10 @@ function FAIO.OnUpdate()
 --	for i = 1, NPCs.Count() do
 --	local npc = NPCs.Get(i)
 --	Log.Write(tostring(NPC.GetUnitName(npc)) .. " " .. tostring(Entity.GetOwner(npc)) .. " " .. tostring(Entity.OwnedBy(npc, myHero)))
+--	Log.Write(Entity.GetClassName(npc))
 --	end
 
---	local modifiers = NPC.GetModifiers(enemy)
+--	local modifiers = NPC.GetModifiers(myHero)
 --	for _, modifier in ipairs(modifiers) do
 --	local modifierName = Modifier.GetName(modifier)
 --	Log.Write(modifierName)
@@ -1134,14 +1138,7 @@ function FAIO.OnDraw()
 		FAIO.drawArcWardenPanel(myHero)
 	end
 
-	if NPC.GetUnitName(myHero) == "npc_dota_hero_furion" then
-		if Menu.IsEnabled(FAIO_options.optionProphetDrawToggle) then
-			FAIO.DrawProphetHelperSwitch()
-		end
-		if Menu.IsEnabled(FAIO_options.optionProphetDrawKS) or Menu.IsEnabled(FAIO_options.optionProphetDrawKSminimap) then
-			FAIO.DrawProphetAwareness(myHero)
-		end
-	end
+
 
 	if NPC.GetUnitName(myHero) == "npc_dota_hero_invoker" then
 		FAIO.InvokerDraw(myHero)
@@ -1163,10 +1160,6 @@ function FAIO.OnDraw()
 
 	if NPC.GetUnitName(myHero) == "npc_dota_hero_nevermore" then
 		FAIO.SFComboDrawRequiemDamage(myHero)
-	end
-
-	if NPC.GetUnitName(myHero) == "npc_dota_hero_rattletrap" then
-		FAIO.clockwerkDrawHookIndicator(myHero)
 	end
 
 	if NPC.GetUnitName(myHero) == "npc_dota_hero_windrunner" then
@@ -2301,227 +2294,8 @@ function FAIO.TargetIndicator(myHero)
 end
 
 
-function FAIO.WDCombo(myHero, enemy)
 
-	if not Menu.IsEnabled(FAIO_options.optionHeroWD) then return end
-	if not  NPC.IsEntityInRange(myHero, enemy, 3000) then return end
 
-  	local Q = NPC.GetAbilityByIndex(myHero, 0)
- 	local E = NPC.GetAbilityByIndex(myHero, 2)
-
-	local blink = NPC.GetItem(myHero, "item_blink", true)
-
-	local myMana = NPC.GetMana(myHero)
-
-	FAIO_itemHandler.itemUsage(myHero, enemy)
-
-	if Menu.IsKeyDown(FAIO_options.optionComboKey) and Entity.IsAlive(enemy) then
- 		if not NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_MAGIC_IMMUNE) and FAIO_utility_functions.heroCanCastSpells(myHero, enemy) == true then
-			if not NPC.IsEntityInRange(myHero, enemy, 999) then
-				if Menu.IsEnabled(FAIO_options.optionHeroWDBlink) and blink and Ability.IsReady(blink) and NPC.IsEntityInRange(myHero, enemy, 1150 + Menu.GetValue(FAIO_options.optionHeroWDBlinkRange)) then
-					Ability.CastPosition(blink, (Entity.GetAbsOrigin(enemy) + (Entity.GetAbsOrigin(myHero) - Entity.GetAbsOrigin(enemy)):Normalized():Scaled(Menu.GetValue(FAIO_options.optionHeroWDBlinkRange))))
-					return
-				end
-			end	
-
-			if os.clock() > FAIO.lastTick then
-		
-				if Q and Ability.IsCastable(Q, myMana) and NPC.IsEntityInRange(myHero, enemy, Ability.GetCastRange(Q)) then
-					Ability.CastTarget(Q, enemy)
-					FAIO.lastTick = os.clock() + 0.35
-					return
-				end
-
-				if E and Ability.IsCastable(E, myMana) and NPC.IsEntityInRange(myHero, enemy, Ability.GetCastRange(E)) then
-					local pred = 0.4 + (NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) * 2)
-					Ability.CastPosition(E, FAIO_utility_functions.castPrediction(myHero, enemy, pred))
-					FAIO.lastTick = os.clock() + 0.35
-					return
-				end
-			end
-		end
-
-		FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
-		return
-	end
-
-end
-
-function FAIO.SSCombo(myHero, enemy)
-
-	if not Menu.IsEnabled(FAIO_options.optionHeroSS) then return end
-	if not  NPC.IsEntityInRange(myHero, enemy, 3000) then return end
-
-  	local Q = NPC.GetAbilityByIndex(myHero, 0)
-	local W = NPC.GetAbilityByIndex(myHero, 1)
- 	local E = NPC.GetAbilityByIndex(myHero, 2)
-
-	local blink = NPC.GetItem(myHero, "item_blink", true)
-
-	local myMana = NPC.GetMana(myHero)
-
-	FAIO_itemHandler.itemUsage(myHero, enemy)
-
-	if Menu.IsKeyDown(FAIO_options.optionComboKey) and Entity.IsAlive(enemy) then
- 		if not NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_MAGIC_IMMUNE) and FAIO_utility_functions.heroCanCastSpells(myHero, enemy) == true then
-			if not NPC.IsEntityInRange(myHero, enemy, 999) then
-				if Menu.IsEnabled(FAIO_options.optionHeroSSBlink) and blink and Ability.IsReady(blink) and NPC.IsEntityInRange(myHero, enemy, 1150 + Menu.GetValue(FAIO_options.optionHeroSSBlinkRange)) then
-					Ability.CastPosition(blink, (Entity.GetAbsOrigin(enemy) + (Entity.GetAbsOrigin(myHero) - Entity.GetAbsOrigin(enemy)):Normalized():Scaled(Menu.GetValue(FAIO_options.optionHeroSSBlinkRange))))
-					return
-				end
-			end	
-
-			if os.clock() > FAIO.lastTick then
-
-				if W and Ability.IsCastable(W, myMana) and NPC.IsEntityInRange(myHero, enemy, Ability.GetCastRange(W)) then
-					Ability.CastTarget(W, enemy)
-					FAIO.lastTick = os.clock() + 0.05
-					return
-				end
-		
-				if Q and Ability.IsCastable(Q, myMana) and NPC.IsEntityInRange(myHero, enemy, Ability.GetCastRange(Q)) then
-					Ability.CastTarget(Q, enemy)
-					FAIO.lastTick = os.clock() + 0.3
-					return
-				end
-
-				if E and Ability.IsCastable(E, myMana) and NPC.IsEntityInRange(myHero, enemy, Ability.GetCastRange(E)) then
-					local hexMod = NPC.GetModifier(enemy, "modifier_shadow_shaman_voodoo")
-					local dieTime = 0
-						if hexMod then
-							dieTime = Modifier.GetDieTime(hexMod)
-						end
-					if dieTime > 0 then
-						if dieTime - GameRules.GetGameTime() <= 0.45 then
-							Ability.CastTarget(E, enemy)
-							FAIO.lastTick = os.clock() + 0.3
-							return
-						end
-					else
-						Ability.CastTarget(E, enemy)
-						FAIO.lastTick = os.clock() + 0.3
-						return
-					end
-				end
-			end
-		end
-
-		FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
-		return
-	end
-
-end
-
-function FAIO.clockwerkCombo(myHero, enemy)
-
-	if not Menu.IsEnabled(FAIO_options.optionHeroClock) then return end
-	if not NPC.IsEntityInRange(myHero, enemy, 3000)	then return end
-	
-	local BatteryAssault = NPC.GetAbilityByIndex(myHero, 0)
-	local PowerCogs = NPC.GetAbilityByIndex(myHero, 1)
-	local RocketFlair = NPC.GetAbilityByIndex(myHero, 2)
-	local HookShot = NPC.GetAbility(myHero, "rattletrap_hookshot")
-
-	local Blademail = NPC.GetItem(myHero, "item_blade_mail", true)
-	local myMana = NPC.GetMana(myHero)
-	
-	FAIO_itemHandler.itemUsage(myHero, enemy)
-
-	local cogsTargeter
-	if NPC.IsRunning(enemy) then
-		cogsTargeter = 100
-	else
-		cogsTargeter = 200
-	end
-
-	if FAIO.clockwerkHookshotChecker(myHero, myMana, enemy, HookShot) == true then
-		FAIO.clockwerkHookUpValue = true
-	else
-		FAIO.clockwerkHookUpValue = false
-	end
-
-	if Menu.IsKeyDown(FAIO_options.optionComboKey) and Entity.GetHealth(enemy) > 0 and not NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_MAGIC_IMMUNE) and FAIO_utility_functions.heroCanCastSpells(myHero, enemy) == true then
-		if not NPC.IsEntityInRange(myHero, enemy, cogsTargeter) then
-			if HookShot and Ability.IsCastable(HookShot, myMana) and NPC.IsEntityInRange(myHero, enemy, Ability.GetCastRange(HookShot)) and FAIO.clockwerkHookUpValue == true then
-				local hookshotPrediction = Ability.GetCastPoint(HookShot) + (Entity.GetAbsOrigin(enemy):__sub(Entity.GetAbsOrigin(myHero)):Length2D() / Ability.GetLevelSpecialValueFor(HookShot, "speed")) + (NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING) * 2)
-				Ability.CastPosition(HookShot, FAIO_utility_functions.castLinearPrediction(myHero, enemy, hookshotPrediction))
-				FAIO.lastTick = os.clock()
-				return
-			end
-		else
-			if PowerCogs and Ability.IsCastable(PowerCogs, myMana) then 
-				Ability.CastNoTarget(PowerCogs)
-				FAIO.lastTick = os.clock()
-				return
-			end
-			if FAIO.SleepReady(0.2) and BatteryAssault and Ability.IsCastable(BatteryAssault, myMana) then 
-				Ability.CastNoTarget(BatteryAssault)
-				FAIO.lastTick = os.clock()
-				return
-			end
-			if FAIO.SleepReady(0.3) and Blademail and Ability.IsCastable(Blademail, myMana) then 
-				Ability.CastNoTarget(Blademail)
-				return
-			end			
-			if FAIO.SleepReady(0.3) and RocketFlair and Ability.IsCastable(RocketFlair, myMana) then 
-				Ability.CastPosition(RocketFlair, Entity.GetAbsOrigin(enemy))
-				return 
-			end
-		end
-	FAIO_attackHandler.GenericMainAttack(myHero, "Enum.UnitOrder.DOTA_UNIT_ORDER_ATTACK_TARGET", enemy, nil)
-	end
-end
-
-function FAIO.clockwerkHookshotChecker(myHero, myMana, enemy, HookShot)
-
-	if not myHero then return false end
-	if not enemy then return false end
-
-	if not HookShot then return false end
-		if not Ability.IsReady(HookShot) or not Ability.IsCastable(HookShot, myMana) then return false end
-
-	local latchRadius = 135
-	local distance = (Entity.GetAbsOrigin(myHero) - Entity.GetAbsOrigin(enemy)):Length2D() - 125
-		if distance < 75 then return false end
-		if distance + 150 > Ability.GetCastRange(HookShot) then return false end
-
-	if #Entity.GetUnitsInRadius(myHero, 125, Enum.TeamType.TEAM_BOTH) > 0 then return false end
-
-	for i = 2, math.floor(distance / latchRadius) do
-		local checkVec = (Entity.GetAbsOrigin(enemy) - Entity.GetAbsOrigin(myHero)):Normalized()
-		local checkPos = Entity.GetAbsOrigin(myHero) + checkVec:Scaled(i*latchRadius)
-		if #NPCs.InRadius(checkPos, latchRadius, Entity.GetTeamNum(myHero), Enum.TeamType.TEAM_BOTH) > 0 then
-			return false
-		end
-	end
-
-	return true
-			
-end
-
-function FAIO.clockwerkDrawHookIndicator(myHero)
-
-	if not myHero then return end
-	if not Menu.IsEnabled(FAIO_options.optionHeroClockDrawIndicator) then return end
-	
-	if FAIO.clockwerkHookUpValue == false then return end
-
-	local enemy = FAIO.targetChecker(Input.GetNearestHeroToCursor(Entity.GetTeamNum(myHero), Enum.TeamType.TEAM_ENEMY))
-		if not enemy then return end
-		if not NPC.IsPositionInRange(enemy, Input.GetWorldCursorPos(), 500, 0) then return end
-
-	local pos = Entity.GetAbsOrigin(enemy)
-	local posY = NPC.GetHealthBarOffset(enemy)
-		pos:SetZ(pos:GetZ() + posY)
-			
-	local x, y, visible = Renderer.WorldToScreen(pos)
-
-	if visible then
-		Renderer.SetDrawColor(50,205,50,255)
-		Renderer.DrawText(FAIO.font, x-40, y-80, "hookable", 0)
-	end
-		
-end
 
 function FAIO.huskarCombo(myHero, enemy)
 
@@ -16195,6 +15969,10 @@ function FAIO.blinkHandler(myHero, enemy, triggerRange, distanceToEnemy, bestPos
 		if targetOrBestPos == nil then
 			targetOrBestPos = false
 		end
+
+	if NPC.HasModifier(myHero, "modifier_item_invisibility_edge_windwalk") or NPC.HasModifier(myHero, "modifier_item_silver_edge_windwalk") then
+		return
+	end
 
 	if targetOrBestPos and effectRange ~= nil and effectRange > 0 then
 		local bestPos = FAIO_utility_functions.getBestPosition(Heroes.InRadius(Entity.GetAbsOrigin(enemy), effectRange * 2, Entity.GetTeamNum(myHero), Enum.TeamType.TEAM_ENEMY), effectRange)

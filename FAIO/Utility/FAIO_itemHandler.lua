@@ -953,7 +953,7 @@ function FAIO_itemHandler.itemUsageSmartOrder(myHero, enemy, activation)
 			end
 
 			if NPC.HasModifier(myHero, "modifier_item_nullifier") and Ability.SecondsSinceLastUse(NPC.GetItem(myHero, "item_nullifier", true)) > -1 and
-				Ability.SecondsSinceLastUse(NPC.GetItem(myHero, "item_nullifier", true)) < ((Entity.GetAbsOrigin(myHero) - Entity.GetAbsOrigin(enemy)):Length2D() / 1200) + 0.25 then
+				Ability.SecondsSinceLastUse(NPC.GetItem(myHero, "item_nullifier", true)) < ((Entity.GetAbsOrigin(myHero) - Entity.GetAbsOrigin(enemy)):Length2D() / 750) + 0.25 then
 				if v[2] == "item_abyssal_blade" or v[2] == "item_sheepstick" or v[2] == "item_bloodthorn" or v[2] == "item_orchid" or v[2] == "item_heavens_halberd" or v[2] == "item_nullifier" or v[2] == "item_diffusal_blade" then
 					skipItem = v[1]
 				end
@@ -1021,23 +1021,23 @@ function FAIO_itemHandler.itemUsageSmartOrder(myHero, enemy, activation)
 				end
 			end
 
-	--		if NPC.HasAbility(myHero, "lion_voodoo") then
-	--			if FAIO_skillHandler.skillIsCastable(NPC.GetAbility(myHero, "lion_voodoo"), Ability.GetCastRange(NPC.GetAbility(myHero, "lion_voodoo")), enemy, Entity.GetAbsOrigin(enemy), false) == true then
-	--				if v[2] == "item_sheepstick" then
-	--					skipItem = v[1]
-	--				end
-	--			else
-	--				if Ability.SecondsSinceLastUse(NPC.GetAbility(myHero, "lion_voodoo")) <= 0.35 then
-	--					if v[2] == "item_sheepstick" then
-	--						skipItem = v[1]
-	--					end
-	--				end
-	--			end
-	--		end
+			if NPC.HasAbility(myHero, "lion_voodoo") then
+				if FAIO_skillHandler.skillIsCastable(NPC.GetAbility(myHero, "lion_voodoo"), Ability.GetCastRange(NPC.GetAbility(myHero, "lion_voodoo")), enemy, Entity.GetAbsOrigin(enemy), false) == true then
+					if v[2] == "item_sheepstick" then
+						skipItem = v[1]
+					end
+				else
+					if Ability.SecondsSinceLastUse(NPC.GetAbility(myHero, "lion_voodoo")) > -1 and Ability.SecondsSinceLastUse(NPC.GetAbility(myHero, "lion_voodoo")) <= 0.15 then
+						if v[2] == "item_sheepstick" then
+							skipItem = v[1]
+						end
+					end
+				end
+			end
 
 			if NPC.HasItem(enemy, "item_aeon_disk", true) then
 				if Ability.SecondsSinceLastUse(NPC.GetItem(enemy, "item_aeon_disk", true)) < 0 then
-					if Entity.GetHealth(enemy) >= 0.85 * Entity.GetMaxHealth(enemy) then
+					if Entity.GetHealth(enemy) >= 0.73 * Entity.GetMaxHealth(enemy) then
 						if v[2] == "item_nullifier" then
 							skipItem = v[1]
 						end
