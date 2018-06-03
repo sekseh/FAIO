@@ -63,7 +63,7 @@ function FAIO_ward.wardProcessing(myHero)
 					FAIO_ward.wardCaptureTiming = os.clock()
 				else
 					if FAIO_ward.wardDispenserCount[ownerID]["sentry"] > sentryStack then
-						FAIO_ward.wardProcessingTable[ownerID + math.floor(GameRules.GetGameTime())] = {type = "sentry", pos = Entity.GetAbsOrigin(heroes), dieTime = math.floor(GameRules.GetGameTime() + 240)}
+						FAIO_ward.wardProcessingTable[ownerID + math.floor(GameRules.GetGameTime())] = {type = "sentry", pos = Entity.GetAbsOrigin(heroes), dieTime = math.floor(GameRules.GetGameTime() + 360)}
 						FAIO_ward.wardDispenserCount[ownerID] = nil
 						FAIO_ward.wardCaptureTiming = os.clock()
 					elseif FAIO_ward.wardDispenserCount[ownerID]["observer"] > sentryStack then
